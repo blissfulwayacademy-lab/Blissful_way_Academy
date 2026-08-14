@@ -4,26 +4,67 @@ import type { LucideIcon } from 'lucide-react';
  * Content and data shapes for the site.
  *
  * `Tutor`, `Programme`, and `PricingTier` are derived field-for-field from the
- * `tutors`, `programs`, and `pricing` const arrays in src/App.tsx. Nothing is
+ * `tutors`, `programmes`, and `pricing` arrays in src/lib/content.ts. Nothing is
  * added or renamed, so they can be applied to those arrays without edits.
  */
 
-/** One entry in the `tutors` array (src/App.tsx). */
+/** Which of the two programmes a tutor teaches. */
+export type TutorSubject = 'igbo' | 'maths';
+
+/** One entry in the `tutors` array (src/lib/content.ts). */
 export interface Tutor {
-  /** Display name, e.g. 'Amaka Okoye'. */
+  /** URL-safe identifier, also used to build `photoUrl`. */
+  slug: string;
+  /** Display name including title, e.g. 'Mrs Virginia Ogbebe'. */
   name: string;
-  /** Title shown under the name, e.g. 'Lead Igbo Language & Cultural Tutor'. */
-  role: string;
-  /** Two letters rendered large on the card face, e.g. 'AO'. */
+  /** Highest teaching qualification, e.g. 'B.Ed Guidance and Counselling'. */
+  qualification: string;
+  /** Whole years of classroom experience. Summed for the hero's headline figure. */
+  yearsExperience: number;
+  /** Registered with the Teachers Registration Council of Nigeria. */
+  trcnRegistered: boolean;
+  cdepCertified: boolean;
+  subject: TutorSubject;
+  /** What they teach, e.g. 'Igbo Language & Culture, Early Years'. */
+  specialisation: string;
+  /**
+   * Photograph under public/. The card falls back to the initials tile when this
+   * is absent or the file fails to load, so a missing photo never shows as broken.
+   */
+  photoUrl?: string;
+  /**
+   * Introduction clip. No play affordance is rendered while this is undefined —
+   * the section previously promised a video that did not exist.
+   */
+  videoUrl?: string;
+  /** Two letters for the fallback tile, e.g. 'VO'. */
   initials: string;
-  /** Tailwind gradient stops for the card, e.g. 'from-amber-200 to-orange-600'. */
+  /** Tailwind gradient stops for the fallback tile, e.g. 'from-amber-200 to-orange-600'. */
   color: string;
-  /** Pull quote shown on the card, rendered inside curly quotes. */
-  quote: string;
 }
 
-/** One entry in the `programs` array (src/App.tsx). */
+/** A single entry in the site's primary navigation. */
+export interface NavLink {
+  label: string;
+  /** The target section's DOM id, without the leading '#'. */
+  id: string;
+}
+
+/** One cell of the four-up trust bar under the hero. */
+export interface TrustPoint {
+  /** A lucide-react component reference, not a string. */
+  icon: LucideIcon;
+  title: string;
+  text: string;
+}
+
+/** One entry in the `programmes` array (src/lib/content.ts). */
 export interface Programme {
+  /**
+   * Anchor id for this programme, without the leading '#'. Nav links resolve
+   * against these, so reordering the array can never break them.
+   */
+  slug: string;
   /** Small label above the title, e.g. '01 / Heritage'. */
   eyebrow: string;
   title: string;
@@ -36,7 +77,7 @@ export interface Programme {
   accent: string;
 }
 
-/** One entry in the `pricing` array (src/App.tsx). */
+/** One entry in the `pricing` array (src/lib/content.ts). */
 export interface PricingTier {
   name: string;
   /** Pre-formatted display string including the currency symbol, e.g. '$100'. */
