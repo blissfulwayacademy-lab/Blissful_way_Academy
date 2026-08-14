@@ -18,7 +18,7 @@ export function PricingCard({ plan, onSelect }: PricingCardProps) {
       )}
       <p className="text-sm font-semibold text-amber-300">{plan.name}</p>
       <div className="mt-6 flex items-end gap-2">
-        <span className="font-serif text-5xl text-white">{plan.price}</span>
+        <span className="font-serif text-[3.4rem] leading-none text-white">{plan.price}</span>
         <span className="mb-1 text-xs text-neutral-500">/ month</span>
       </div>
       <p className="mt-1 text-xs font-medium text-neutral-400">{plan.detail}</p>

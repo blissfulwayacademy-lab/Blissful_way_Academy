@@ -30,7 +30,7 @@ export function ClassroomPreview() {
                 <span className="text-[10px] font-medium uppercase tracking-[0.2em] text-amber-400">
                   Today&apos;s lesson
                 </span>
-                <h3 className="mt-3 max-w-xs font-serif text-2xl text-white sm:text-3xl">
+                <h3 className="mt-3 max-w-xs font-serif text-[1.6rem] text-white sm:text-[2.05rem]">
                   The beauty of <span className="text-amber-300">Ọ̀nà</span>
                 </h3>
                 <p className="mt-2 text-xs text-neutral-400">Igbo language · Beginner level</p>

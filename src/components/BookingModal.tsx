@@ -195,7 +195,7 @@ export function BookingModal({ open, onClose, planInterest }: BookingModalProps)
             <span className="text-xs font-semibold uppercase tracking-[0.24em] text-amber-400">
               Start your journey
             </span>
-            <h2 id={headingId} className="mt-3 font-serif text-3xl text-white sm:text-4xl">
+            <h2 id={headingId} className="mt-3 font-serif text-[2rem] text-white sm:text-[2.4rem]">
               Book a <span className="text-amber-400">{TRIAL_PRICE} trial</span>
             </h2>
             <p className="mt-3 max-w-md text-sm leading-6 text-neutral-400">
@@ -313,7 +313,7 @@ export function BookingModal({ open, onClose, planInterest }: BookingModalProps)
             <div className="mb-6 rounded-full border border-amber-400/30 bg-amber-400/10 p-4 text-amber-300">
               <Check size={28} />
             </div>
-            <h2 id={headingId} className="font-serif text-3xl text-white">
+            <h2 id={headingId} className="font-serif text-[2rem] text-white">
               You&apos;re on your way.
             </h2>
             <p className="mt-3 max-w-sm text-sm leading-6 text-neutral-400">

@@ -10,7 +10,7 @@ export function CtaBand({ onBookTrial }: CtaBandProps) {
         <div className="absolute -right-16 -top-24 h-64 w-64 rounded-full bg-amber-400/15 blur-3xl" />
         <div className="relative max-w-2xl">
           <p className="section-kicker">A meaningful first step</p>
-          <h2 className="font-serif text-3xl leading-tight text-white sm:text-5xl">
+          <h2 className="font-serif text-[2.1rem] leading-[1.15] text-white sm:text-[3.4rem]">
             Give them the gift of <span className="text-amber-400">belonging.</span>
           </h2>
           <p className="mt-5 max-w-lg text-sm leading-6 text-neutral-300">

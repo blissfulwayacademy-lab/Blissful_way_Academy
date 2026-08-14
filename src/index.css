@@ -24,8 +24,12 @@
   .section-kicker {
     @apply text-[10px] font-bold uppercase tracking-[0.24em] text-amber-400;
   }
+  /* Sizes and tracking retuned for Gentium Book Plus. Cinzel was an all-caps
+     inscriptional face that filled the em; Gentium is a text serif with true
+     lowercase and a smaller x-height, so it reads smaller and lighter at the
+     same px, and the tight negative tracking Cinzel needed now crowds it. */
   .section-title {
-    @apply mt-3 font-serif text-3xl leading-tight tracking-[-0.02em] text-white sm:text-5xl;
+    @apply mt-3 font-serif text-[2.1rem] leading-[1.15] tracking-[-0.01em] text-white sm:text-[3.4rem];
   }
   .section-copy {
     @apply mt-5 max-w-xl text-sm leading-6 text-neutral-400 sm:text-base;

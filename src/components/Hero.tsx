@@ -16,7 +16,7 @@ export function Hero({ onBookTrial }: HeroProps) {
           <div className="mb-7 inline-flex items-center gap-2 rounded-full border border-amber-400/25 bg-amber-400/5 px-3 py-2 text-[10px] font-semibold uppercase tracking-[0.2em] text-amber-300">
             <Sparkles size={13} /> The future of rooted learning
           </div>
-          <h1 className="font-serif text-[2.7rem] leading-[1.08] tracking-[-0.03em] text-white sm:text-5xl lg:text-[4.35rem]">
+          <h1 className="font-serif text-[2.9rem] leading-[1.12] tracking-[-0.012em] text-white sm:text-[3.4rem] lg:text-[4.2rem]">
             Where <span className="text-amber-400">culture</span> meets
             <br className="hidden sm:block" /> <span className="italic">curiosity.</span>
           </h1>

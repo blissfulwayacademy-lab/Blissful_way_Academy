@@ -38,7 +38,7 @@ export function TutorCard({ tutor, reversed }: TutorCardProps) {
           ) : (
             <>
               <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_20%,rgba(255,255,255,.5),transparent_28%)]" />
-              <span className="absolute inset-0 flex items-center justify-center font-serif text-[6.5rem] leading-none text-black/50 sm:text-[8rem]">
+              <span className="absolute inset-0 flex items-center justify-center font-serif text-[8rem] leading-none text-black/50 sm:text-[10rem]">
                 {tutor.initials}
               </span>
             </>
@@ -47,7 +47,9 @@ export function TutorCard({ tutor, reversed }: TutorCardProps) {
       </div>
 
       <div className={reversed ? 'lg:order-1' : undefined}>
-        <h3 className="font-serif text-2xl leading-tight text-white sm:text-3xl">{tutor.name}</h3>
+        <h3 className="font-serif text-[1.6rem] leading-[1.2] text-white sm:text-[2.05rem]">
+          {tutor.name}
+        </h3>
         <p className="mt-2 text-sm font-medium text-amber-300">{tutor.specialisation}</p>
         <dl className="mt-5 space-y-3 border-t border-white/10 pt-5 text-sm">
           <div className="flex gap-3">

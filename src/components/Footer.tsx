@@ -8,7 +8,7 @@ export function Footer() {
         <div>
           <a href="#home" className="flex items-center gap-3">
             <img src={LOGO_SRC} alt={LOGO_ALT} className="h-10 w-10 rounded-full object-cover" />
-            <span className="font-serif text-base text-amber-100">
+            <span className="font-serif text-lg tracking-wide text-amber-100">
               Blissful Way <span className="text-amber-400">Academy</span>
             </span>
           </a>

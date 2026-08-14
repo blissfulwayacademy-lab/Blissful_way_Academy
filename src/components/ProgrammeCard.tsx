@@ -26,7 +26,7 @@ export function ProgrammeCard({ programme, anchorId }: ProgrammeCardProps) {
           {programme.eyebrow}
         </span>
       </div>
-      <h3 className="max-w-md font-serif text-2xl leading-tight text-white sm:text-3xl">
+      <h3 className="max-w-md font-serif text-[1.6rem] leading-[1.2] text-white sm:text-[2.05rem]">
         {programme.title}
       </h3>
       <p className="mt-4 max-w-lg text-sm leading-6 text-neutral-400">{programme.description}</p>
