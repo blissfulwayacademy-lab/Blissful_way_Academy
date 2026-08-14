@@ -4,9 +4,25 @@ import type { Tutor } from '@/types';
 
 type TutorCardProps = {
   tutor: Tutor;
-  /** Flips the photo to the right on large screens, giving the list its rhythm. */
-  reversed: boolean;
+  /** Position in the roster. Drives the alternating layout and the tile treatment. */
+  index: number;
 };
+
+/**
+ * One treatment for every tile: charcoal ground, gold initials.
+ *
+ * Only the gradient angle and a few points of opacity change between them —
+ * enough that six stacked rows do not look stamped from one die, not enough to
+ * introduce a second colour. The list cycles, so it holds at any roster size.
+ */
+const TILE_TREATMENTS = [
+  { gradient: 'bg-gradient-to-br', initials: 'text-amber-400/40' },
+  { gradient: 'bg-gradient-to-b', initials: 'text-amber-400/30' },
+  { gradient: 'bg-gradient-to-bl', initials: 'text-amber-400/35' },
+  { gradient: 'bg-gradient-to-r', initials: 'text-amber-400/30' },
+  { gradient: 'bg-gradient-to-tr', initials: 'text-amber-400/40' },
+  { gradient: 'bg-gradient-to-tl', initials: 'text-amber-400/35' },
+];
 
 function Badge({ icon: Icon, label }: { icon: typeof ShieldCheck; label: string }) {
   return (
@@ -17,15 +33,19 @@ function Badge({ icon: Icon, label }: { icon: typeof ShieldCheck; label: string 
   );
 }
 
-export function TutorCard({ tutor, reversed }: TutorCardProps) {
+export function TutorCard({ tutor, index }: TutorCardProps) {
   const [imageFailed, setImageFailed] = useState(false);
   const showPhoto = Boolean(tutor.photoUrl) && !imageFailed;
+
+  /** Flips the photo to the right on large screens, giving the list its rhythm. */
+  const reversed = index % 2 === 1;
+  const treatment = TILE_TREATMENTS[index % TILE_TREATMENTS.length];
 
   return (
     <article className="grid items-center gap-7 lg:grid-cols-2 lg:gap-14">
       <div className={reversed ? 'lg:order-2' : undefined}>
         <div
-          className={`relative aspect-[4/3] overflow-hidden rounded-3xl bg-gradient-to-br ${tutor.color}`}
+          className={`relative aspect-[4/3] overflow-hidden rounded-3xl border border-white/5 ${treatment.gradient} from-neutral-800 to-neutral-950`}
         >
           {showPhoto ? (
             <img
@@ -37,8 +57,10 @@ export function TutorCard({ tutor, reversed }: TutorCardProps) {
             />
           ) : (
             <>
-              <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_20%,rgba(255,255,255,.5),transparent_28%)]" />
-              <span className="absolute inset-0 flex items-center justify-center font-serif text-[8rem] leading-none text-black/50 sm:text-[10rem]">
+              <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_20%,rgba(251,191,36,.10),transparent_55%)]" />
+              <span
+                className={`absolute inset-0 flex items-center justify-center font-serif text-[8rem] leading-none sm:text-[10rem] ${treatment.initials}`}
+              >
                 {tutor.initials}
               </span>
             </>

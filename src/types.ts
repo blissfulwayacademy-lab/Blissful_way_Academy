@@ -39,8 +39,6 @@ export interface Tutor {
   videoUrl?: string;
   /** Two letters for the fallback tile, e.g. 'VO'. */
   initials: string;
-  /** Tailwind gradient stops for the fallback tile, e.g. 'from-amber-200 to-orange-600'. */
-  color: string;
 }
 
 /** A single entry in the site's primary navigation. */

@@ -30,8 +30,11 @@ export function ClassroomPreview() {
                 <span className="text-[10px] font-medium uppercase tracking-[0.2em] text-amber-400">
                   Today&apos;s lesson
                 </span>
-                <h3 className="mt-3 max-w-xs font-serif text-[1.6rem] text-white sm:text-[2.05rem]">
-                  The beauty of <span className="text-amber-300">Ọ̀nà</span>
+                <h3
+                  lang="ig"
+                  className="mt-3 max-w-xs font-serif text-[1.6rem] text-white sm:text-[2.05rem]"
+                >
+                  Ịdị mma nke <span className="text-amber-300">ụmụnne</span>
                 </h3>
                 <p className="mt-2 text-xs text-neutral-400">Igbo language · Beginner level</p>
               </div>
@@ -42,12 +45,21 @@ export function ClassroomPreview() {
                   </div>
                   <div>
                     <div className="text-xs text-white">Word of the day</div>
-                    <div className="text-[10px] text-neutral-500">Ọ̀nà means “path”</div>
+                    <div className="text-[10px] text-neutral-500">
+                      <span lang="ig">Ụmụnne</span> means Brethren
+                    </div>
                   </div>
                 </div>
+                {/* The two participants are the tutor tile at chip scale: same
+                    charcoal ground, same gold initials, and the same pair of
+                    gradient angles the first two tiles in the roster use. */}
                 <div className="flex -space-x-2">
-                  <div className="avatar bg-gradient-to-br from-amber-200 to-orange-600">VO</div>
-                  <div className="avatar bg-gradient-to-br from-sky-200 to-blue-700">R</div>
+                  <div className="avatar bg-gradient-to-br from-neutral-800 to-neutral-950 text-amber-400">
+                    VO
+                  </div>
+                  <div className="avatar bg-gradient-to-b from-neutral-800 to-neutral-950 text-amber-400/80">
+                    R
+                  </div>
                 </div>
               </div>
             </div>

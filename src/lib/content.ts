@@ -112,9 +112,9 @@ const MATHS_SPECIALISATION = 'Early Years Maths & Number Confidence';
 /**
  * The real teaching roster.
  *
- * Every `photoUrl` is commented out until the photographs exist at
+ * A `photoUrl` stays commented out until the photograph exists at
  * public/assets/images/tutors/{slug}.jpg — uncomment each line as its file is
- * added. Without them the cards render the initials-on-gradient tile, which is
+ * added. Without it the card renders the charcoal initials tile, which is
  * exactly what the onError fallback would show anyway, minus a failed request
  * per tutor on every page load.
  */
@@ -128,9 +128,8 @@ export const tutors: Tutor[] = [
     cdepCertified: true,
     subject: 'igbo',
     specialisation: IGBO_SPECIALISATION,
-    // photoUrl: '/assets/images/tutors/virginia-ogbebe.jpg',
+    photoUrl: '/assets/images/tutors/virginia-ogbebe.jpg',
     initials: 'VO',
-    color: 'from-amber-200 to-orange-600',
   },
   {
     slug: 'ewelum-chikaodili',
@@ -141,9 +140,8 @@ export const tutors: Tutor[] = [
     cdepCertified: true,
     subject: 'igbo',
     specialisation: IGBO_SPECIALISATION,
-    // photoUrl: '/assets/images/tutors/ewelum-chikaodili.jpg',
+    photoUrl: '/assets/images/tutors/ewelum-chikaodili.jpg',
     initials: 'EC',
-    color: 'from-rose-200 to-red-700',
   },
   {
     slug: 'rita-okwor',
@@ -156,7 +154,6 @@ export const tutors: Tutor[] = [
     specialisation: IGBO_SPECIALISATION,
     // photoUrl: '/assets/images/tutors/rita-okwor.jpg',
     initials: 'RO',
-    color: 'from-emerald-200 to-green-700',
   },
   {
     slug: 'agatha-chinweokwu',
@@ -167,9 +164,8 @@ export const tutors: Tutor[] = [
     cdepCertified: true,
     subject: 'igbo',
     specialisation: IGBO_SPECIALISATION,
-    // photoUrl: '/assets/images/tutors/agatha-chinweokwu.jpg',
+    photoUrl: '/assets/images/tutors/agatha-chinweokwu.jpg',
     initials: 'AC',
-    color: 'from-violet-200 to-purple-700',
   },
   {
     slug: 'uchenna-osagu',
@@ -180,9 +176,8 @@ export const tutors: Tutor[] = [
     cdepCertified: true,
     subject: 'maths',
     specialisation: MATHS_SPECIALISATION,
-    // photoUrl: '/assets/images/tutors/uchenna-osagu.jpg',
+    photoUrl: '/assets/images/tutors/uchenna-osagu.jpg',
     initials: 'UO',
-    color: 'from-cyan-200 to-blue-700',
   },
   {
     slug: 'chinwendu-nwoga',
@@ -195,7 +190,6 @@ export const tutors: Tutor[] = [
     specialisation: MATHS_SPECIALISATION,
     // photoUrl: '/assets/images/tutors/chinwendu-nwoga.jpg',
     initials: 'CN',
-    color: 'from-sky-200 to-blue-700',
   },
 ];
 
@@ -207,6 +201,25 @@ export const COMBINED_YEARS_EXPERIENCE = tutors.reduce(
   (total, tutor) => total + tutor.yearsExperience,
   0,
 );
+
+/**
+ * Igbo section kickers, sitting above the English headings.
+ *
+ * Rendered uppercase by `.section-kicker`; every use must be wrapped in
+ * `<span lang="ig">` so assistive tech and crawlers switch language correctly.
+ */
+export const IGBO_KICKERS = {
+  /** Hero — a greeting, "hello / welcome". */
+  greeting: 'Ndeewo',
+  /** Programmes — "what we teach". */
+  programmes: 'Ihe anyị na-akụzi',
+  /** Tutors — "our teachers". */
+  tutors: 'Ndị nkụzi anyị',
+  /** Pricing — "price". */
+  pricing: 'Ọnụahịa',
+  /** Closing call to action — "a beginning". */
+  cta: 'Mmalite',
+};
 
 export const TRCN_EXPLAINER =
   'TRCN is the Teachers Registration Council of Nigeria, the statutory body that licenses and regulates teaching practice nationwide.';

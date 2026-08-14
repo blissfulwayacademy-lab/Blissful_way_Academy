@@ -1,5 +1,6 @@
 import { ArrowRight } from 'lucide-react';
-import { TRIAL_PRICE } from '@/lib/content';
+import { UliRule } from '@/components/UliRule';
+import { IGBO_KICKERS, TRIAL_PRICE } from '@/lib/content';
 
 type CtaBandProps = { onBookTrial: () => void };
 
@@ -9,11 +10,14 @@ export function CtaBand({ onBookTrial }: CtaBandProps) {
       <div className="relative px-6 py-12 sm:px-12 sm:py-16 lg:px-20">
         <div className="absolute -right-16 -top-24 h-64 w-64 rounded-full bg-amber-400/15 blur-3xl" />
         <div className="relative max-w-2xl">
-          <p className="section-kicker">A meaningful first step</p>
+          <p className="section-kicker">
+            <span lang="ig">{IGBO_KICKERS.cta}</span>
+          </p>
           <h2 className="font-serif text-[2.1rem] leading-[1.15] text-white sm:text-[3.4rem]">
             Give them the gift of <span className="text-amber-400">belonging.</span>
           </h2>
-          <p className="mt-5 max-w-lg text-sm leading-6 text-neutral-300">
+          <UliRule />
+          <p className="mt-6 max-w-lg text-sm leading-6 text-neutral-300">
             Start with a low-pressure trial and discover what becomes possible when a child feels
             seen, supported, and inspired.
           </p>

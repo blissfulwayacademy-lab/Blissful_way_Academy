@@ -1,5 +1,6 @@
 import { PricingCard } from '@/components/PricingCard';
-import { pricing } from '@/lib/content';
+import { UliRule } from '@/components/UliRule';
+import { IGBO_KICKERS, pricing } from '@/lib/content';
 import type { PlanInterest } from '@/types';
 
 type PricingSectionProps = {
@@ -14,10 +15,16 @@ export function PricingSection({ onSelectPlan }: PricingSectionProps) {
       className="mx-auto max-w-7xl scroll-mt-[90px] px-5 py-20 sm:px-8 lg:py-28"
     >
       <div className="text-center">
-        <p className="section-kicker">Simple, transparent tuition</p>
+        <p className="section-kicker">
+          <span lang="ig">{IGBO_KICKERS.pricing}</span>
+        </p>
         <h2 className="section-title">
           Invest in their <span className="text-amber-400">becoming.</span>
         </h2>
+        {/* Centred here; the motif itself is unchanged. */}
+        <div className="flex justify-center">
+          <UliRule />
+        </div>
         <p className="mx-auto section-copy">
           Choose the rhythm that fits your family. Every plan includes caring teachers and a
           learning path made for your child.

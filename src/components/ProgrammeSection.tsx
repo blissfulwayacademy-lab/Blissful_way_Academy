@@ -1,5 +1,6 @@
 import { ProgrammeCard } from '@/components/ProgrammeCard';
-import { programmes } from '@/lib/content';
+import { UliRule } from '@/components/UliRule';
+import { IGBO_KICKERS, programmes } from '@/lib/content';
 
 /**
  * The section as a whole answers to the first programme's slug, so that anchor
@@ -18,10 +19,13 @@ export function ProgrammeSection() {
       className="mx-auto max-w-7xl scroll-mt-[90px] px-5 py-20 sm:px-8 lg:py-28"
     >
       <div className="max-w-2xl">
-        <p className="section-kicker">The academy experience</p>
+        <p className="section-kicker">
+          <span lang="ig">{IGBO_KICKERS.programmes}</span>
+        </p>
         <h2 className="section-title">
           A richer way to <span className="text-amber-400">grow.</span>
         </h2>
+        <UliRule />
         <p className="section-copy">
           Our programs are designed around the whole child — building a confident sense of identity
           alongside the skills to thrive in school and beyond.
