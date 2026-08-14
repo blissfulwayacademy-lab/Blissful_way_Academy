@@ -22,7 +22,7 @@ export function Header({ onBookTrial }: HeaderProps) {
           <img
             src={LOGO_SRC}
             alt={LOGO_ALT}
-            className="h-11 w-11 rounded-full object-cover ring-1 ring-amber-400/50"
+            className="h-11 w-auto object-contain"
           />
           <span className="font-serif text-base tracking-wide text-amber-100 sm:text-lg">
             Blissful Way <span className="text-amber-400">Academy</span>

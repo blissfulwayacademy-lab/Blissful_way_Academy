@@ -27,7 +27,7 @@ export function ProgrammeSection() {
         </h2>
         <UliRule />
         <p className="section-copy">
-          Our programs are designed around the whole child — building a confident sense of identity
+          Our programmes are designed around the whole child — building a confident sense of identity
           alongside the skills to thrive in school and beyond.
         </p>
       </div>

@@ -41,11 +41,21 @@ export function TutorCard({ tutor, index }: TutorCardProps) {
   const reversed = index % 2 === 1;
   const treatment = TILE_TREATMENTS[index % TILE_TREATMENTS.length];
 
+  /**
+   * The portrait column is a fixed 280px so the row reads as
+   * portrait-and-details rather than photo-dominated. The template has to flip
+   * with `reversed`, since column widths are positional — the order classes
+   * alone would drop the portrait into the wide column.
+   */
   return (
-    <article className="grid items-center gap-7 lg:grid-cols-2 lg:gap-14">
+    <article
+      className={`grid items-center gap-7 lg:gap-14 ${
+        reversed ? 'lg:grid-cols-[1fr_280px]' : 'lg:grid-cols-[280px_1fr]'
+      }`}
+    >
       <div className={reversed ? 'lg:order-2' : undefined}>
         <div
-          className={`relative aspect-[4/3] overflow-hidden rounded-3xl border border-white/5 ${treatment.gradient} from-neutral-800 to-neutral-950`}
+          className={`relative aspect-square w-full overflow-hidden rounded-3xl border border-white/5 ${treatment.gradient} from-neutral-800 to-neutral-950`}
         >
           {showPhoto ? (
             <img
@@ -53,13 +63,13 @@ export function TutorCard({ tutor, index }: TutorCardProps) {
               alt={`${tutor.name}, ${tutor.specialisation}`}
               loading="lazy"
               onError={() => setImageFailed(true)}
-              className="h-full w-full object-cover"
+              className="h-full w-full object-cover object-[center_25%]"
             />
           ) : (
             <>
               <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_20%,rgba(251,191,36,.10),transparent_55%)]" />
               <span
-                className={`absolute inset-0 flex items-center justify-center font-serif text-[8rem] leading-none sm:text-[10rem] ${treatment.initials}`}
+                className={`absolute inset-0 flex items-center justify-center font-serif text-[5rem] leading-none sm:text-[6rem] ${treatment.initials}`}
               >
                 {tutor.initials}
               </span>

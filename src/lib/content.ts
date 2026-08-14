@@ -44,7 +44,7 @@ export const LOGO_ALT = 'Blissful Way Academy crest';
 export const NAV_LINKS: NavLink[] = [
   { label: 'Home', id: 'home' },
   { label: 'Igbo Heritage', id: 'igbo-heritage' },
-  { label: 'Math & Logic', id: 'math-logic' },
+  { label: 'Early Years Maths', id: 'early-years-maths' },
   { label: 'Our Tutors', id: 'our-tutors' },
   { label: 'Pricing', id: 'pricing' },
 ];
@@ -91,15 +91,16 @@ export const programmes: Programme[] = [
     accent: 'from-amber-400/20 via-transparent to-transparent',
   },
   {
-    slug: 'math-logic',
+    slug: 'early-years-maths',
     eyebrow: '02 / STEM',
     title: 'Early Years Maths & Number Confidence (ages 4-9)',
     description:
       'Build sharp, confident thinkers with a learning experience that makes complex ideas feel clear and rewarding.',
     bullets: [
-      'Common Core & UK curriculum aligned',
-      'Logic puzzles and quantitative reasoning',
-      'Step-by-step digital whiteboard solving',
+      'Counting and early number sense',
+      'First addition and subtraction',
+      'Shape and pattern recognition',
+      'Confidence before formal schooling pressure',
     ],
     icon: Ruler,
     accent: 'from-sky-400/15 via-transparent to-transparent',
@@ -233,13 +234,13 @@ export const pricing: PricingTier[] = [
     features: [
       '4 hours per month',
       '1-on-1 Igbo or Early Years Maths',
-      'Personalized learning plan',
+      'Personalised learning plan',
     ],
     featured: false,
     planInterest: 'starter',
   },
   {
-    name: 'Heritage & STEM Dual Program',
+    name: 'Heritage & STEM Dual Programme',
     price: '$180',
     detail: '$22.50 / hour',
     description: 'The complete pathway for children ready to grow across culture and academics.',

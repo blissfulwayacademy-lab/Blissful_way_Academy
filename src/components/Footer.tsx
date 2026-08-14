@@ -7,7 +7,7 @@ export function Footer() {
       <div className="mx-auto grid max-w-7xl gap-12 px-5 py-14 sm:px-8 lg:grid-cols-[1.5fr_1fr_1fr]">
         <div>
           <a href="#home" className="flex items-center gap-3">
-            <img src={LOGO_SRC} alt={LOGO_ALT} className="h-10 w-10 rounded-full object-cover" />
+            <img src={LOGO_SRC} alt={LOGO_ALT} className="h-10 w-auto object-contain" />
             <span className="font-serif text-lg tracking-wide text-amber-100">
               Blissful Way <span className="text-amber-400">Academy</span>
             </span>
