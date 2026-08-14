@@ -152,7 +152,7 @@ export const tutors: Tutor[] = [
     cdepCertified: true,
     subject: 'igbo',
     specialisation: IGBO_SPECIALISATION,
-    // photoUrl: '/assets/images/tutors/rita-okwor.jpg',
+    photoUrl: '/assets/images/tutors/rita-okwor.jpg',
     initials: 'RO',
   },
   {
@@ -188,7 +188,7 @@ export const tutors: Tutor[] = [
     cdepCertified: true,
     subject: 'maths',
     specialisation: MATHS_SPECIALISATION,
-    // photoUrl: '/assets/images/tutors/chinwendu-nwoga.jpg',
+    photoUrl: '/assets/images/tutors/chinwendu-nwoga.jpg',
     initials: 'CN',
   },
 ];
