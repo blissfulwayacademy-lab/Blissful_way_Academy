@@ -92,7 +92,7 @@ export const programmes: Programme[] = [
   },
   {
     slug: 'early-years-maths',
-    eyebrow: '02 / STEM',
+    eyebrow: '02 / Numeracy',
     title: 'Early Years Maths & Number Confidence (ages 4-9)',
     description:
       'Build sharp, confident thinkers with a learning experience that makes complex ideas feel clear and rewarding.',
