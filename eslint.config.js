@@ -5,7 +5,10 @@ import reactRefresh from 'eslint-plugin-react-refresh';
 import tseslint from 'typescript-eslint';
 
 export default tseslint.config(
-  { ignores: ['dist'] },
+  // supabase/functions runs on Deno, not in the browser: it has its own globals
+  // and resolves remote imports. Linting it with the app's browser config only
+  // produces false positives — `deno check` is the right tool for those files.
+  { ignores: ['dist', 'supabase/functions'] },
   {
     extends: [js.configs.recommended, ...tseslint.configs.recommended],
     files: ['**/*.{ts,tsx}'],

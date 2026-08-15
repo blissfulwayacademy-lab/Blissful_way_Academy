@@ -21,3 +21,7 @@ dist-ssr
 *.sln
 *.sw?
 .env
+
+# Supabase CLI scratch state — local link details, not project source.
+supabase/.temp
+supabase/.branches
