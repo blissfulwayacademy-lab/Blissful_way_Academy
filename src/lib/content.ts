@@ -21,7 +21,7 @@ import type {
 /** Price of the introductory session. Referenced by all five trial CTAs. */
 export const TRIAL_PRICE = '$15';
 
-export const SUPPORT_EMAIL = 'blissfulwayacademy@gmail.com';
+export const SUPPORT_EMAIL = 'hello@blissfulwayacademy.online';
 
 export const CONTACT = {
   email: SUPPORT_EMAIL,
