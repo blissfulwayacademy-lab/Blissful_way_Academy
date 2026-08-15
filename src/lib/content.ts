@@ -36,6 +36,27 @@ export const LOGO_SRC = '/assets/images/Blissful_way_Academy_Logo.jpg';
 export const LOGO_ALT = 'Blissful Way Academy crest';
 
 /**
+ * Real, verified social profiles. Only list an account that actually exists —
+ * these are mirrored into the JSON-LD `sameAs` array in index.html, and search
+ * engines treat that array as a claim of ownership.
+ *
+ * There is deliberately no Facebook entry: the academy has no Facebook page.
+ *
+ * NOTE: index.html is static and cannot import from this module, so its
+ * `sameAs` array repeats these URLs. Change both together.
+ */
+export const SOCIAL_LINKS = [
+  {
+    label: 'Instagram',
+    href: 'https://www.instagram.com/blissfulacademy2026?utm_source=qr',
+  },
+  {
+    label: 'TikTok',
+    href: 'https://www.tiktok.com/@blissfulwayacademy?_r=1&_t=ZS-98ua7NzMSdk',
+  },
+] as const;
+
+/**
  * The single source of truth for navigation.
  *
  * The desktop header and mobile drawer render this in full; the footer renders
@@ -88,7 +109,10 @@ export const programmes: Programme[] = [
       'Cultural history taught through play',
     ],
     icon: BookOpen,
-    accent: 'from-amber-400/20 via-transparent to-transparent',
+    // Tints for the cream card ground. The dark build used amber/sky at low
+    // alpha over charcoal; on cream the same idea needs the deeper pair, or the
+    // wash disappears into the paper.
+    accent: 'from-gold-deep/15 via-transparent to-transparent',
   },
   {
     slug: 'early-years-maths',
@@ -103,7 +127,7 @@ export const programmes: Programme[] = [
       'Confidence before formal schooling pressure',
     ],
     icon: Ruler,
-    accent: 'from-sky-400/15 via-transparent to-transparent',
+    accent: 'from-moss/15 via-transparent to-transparent',
   },
 ];
 
@@ -113,23 +137,32 @@ const MATHS_SPECIALISATION = 'Early Years Maths & Number Confidence';
 /**
  * The real teaching roster.
  *
- * A `photoUrl` stays commented out until the photograph exists at
- * public/assets/images/tutors/{slug}.jpg — uncomment each line as its file is
- * added. Without it the card renders the charcoal initials tile, which is
+ * A `photoUrl` stays commented out until a genuine photograph of that teacher
+ * exists at public/assets/images/tutors/{slug}.jpg — uncomment each line as its
+ * file is added. Without it the card renders the moss initials tile, which is
  * exactly what the onError fallback would show anyway, minus a failed request
  * per tutor on every page load.
+ *
+ * PHOTOGRAPH PENDING: Mrs Ewelum Chikaodili.
+ *
+ * Her previous image was AI-generated or composited stock rather than a
+ * photograph of her. On a site whose central claim is a real, TRCN-registered
+ * roster with named qualifications, a synthetic portrait discredits the very
+ * thing it illustrates — so the initials tile is the honest placeholder until a
+ * real photograph is supplied. Only restore that line alongside a genuine
+ * photograph of the named teacher.
  */
 export const tutors: Tutor[] = [
   {
-    slug: 'virginia-ogbebe',
-    name: 'Mrs Virginia Ogbebe',
+    slug: 'virginia-ogbobe',
+    name: 'Mrs Virginia Ogbobe',
     qualification: 'B.Ed Adult Education Administration',
     yearsExperience: 33,
     trcnRegistered: true,
     cdepCertified: true,
     subject: 'igbo',
     specialisation: IGBO_SPECIALISATION,
-    photoUrl: '/assets/images/tutors/virginia-ogbebe.jpg',
+    photoUrl: '/assets/images/tutors/virginia-ogbobe.jpg',
     initials: 'VO',
   },
   {
@@ -141,7 +174,9 @@ export const tutors: Tutor[] = [
     cdepCertified: true,
     subject: 'igbo',
     specialisation: IGBO_SPECIALISATION,
-    photoUrl: '/assets/images/tutors/ewelum-chikaodili.jpg',
+    // Photograph pending — see the note above. The previous file was not a
+    // photograph of Mrs Chikaodili.
+    // photoUrl: '/assets/images/tutors/ewelum-chikaodili.jpg',
     initials: 'EC',
   },
   {

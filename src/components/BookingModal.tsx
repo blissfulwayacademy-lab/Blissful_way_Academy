@@ -168,7 +168,7 @@ export function BookingModal({ open, onClose, planInterest }: BookingModalProps)
 
   return (
     <div
-      className="fixed inset-0 z-[60] flex items-center justify-center bg-black/80 p-4 backdrop-blur-sm"
+      className="fixed inset-0 z-[60] flex items-center justify-center bg-ink/80 p-4 backdrop-blur-sm"
       onClick={onClose}
     >
       {/* Click, not mousedown: dragging a text selection out of the panel used to
@@ -179,26 +179,26 @@ export function BookingModal({ open, onClose, planInterest }: BookingModalProps)
         aria-modal="true"
         aria-labelledby={headingId}
         tabIndex={-1}
-        className="relative max-h-[92vh] w-full max-w-xl overflow-y-auto rounded-3xl border border-amber-500/30 bg-neutral-900 p-6 shadow-2xl shadow-amber-950/30 outline-none sm:p-8"
+        className="relative max-h-[92vh] w-full max-w-xl overflow-y-auto rounded-3xl border border-gold/30 bg-ink-raised p-6 shadow-2xl shadow-ink outline-none sm:p-8"
         onClick={(event) => event.stopPropagation()}
       >
         <button
           type="button"
           aria-label="Close booking form"
           onClick={onClose}
-          className="absolute right-5 top-5 rounded-full border border-white/10 p-2 text-neutral-400 transition hover:border-amber-400/40 hover:text-amber-300"
+          className="absolute right-5 top-5 rounded-full border border-white/10 p-2 text-bone-muted transition hover:border-gold/40 hover:text-gold"
         >
           <X size={18} />
         </button>
         {!submitted ? (
           <>
-            <span className="text-xs font-semibold uppercase tracking-[0.24em] text-amber-400">
+            <span className="text-xs font-semibold uppercase tracking-[0.24em] text-gold">
               Start your journey
             </span>
-            <h2 id={headingId} className="mt-3 font-serif text-[2rem] text-white sm:text-[2.4rem]">
-              Book a <span className="text-amber-400">{TRIAL_PRICE} trial</span>
+            <h2 id={headingId} className="mt-3 font-serif text-[2rem] text-bone sm:text-[2.4rem]">
+              Book a <span className="text-gold">{TRIAL_PRICE} trial</span>
             </h2>
-            <p className="mt-3 max-w-md text-sm leading-6 text-neutral-400">
+            <p className="mt-3 max-w-md text-sm leading-6 text-bone-muted">
               Tell us a little about your family and we&apos;ll help you find the right first
               session.
             </p>
@@ -209,7 +209,7 @@ export function BookingModal({ open, onClose, planInterest }: BookingModalProps)
                 <label htmlFor="company">Company (leave this field empty)</label>
                 <input id="company" name="company" type="text" tabIndex={-1} autoComplete="off" />
               </div>
-              <label className="text-sm text-neutral-300 sm:col-span-2">
+              <label className="text-sm text-bone sm:col-span-2">
                 Parent full name
                 <input
                   required
@@ -219,7 +219,7 @@ export function BookingModal({ open, onClose, planInterest }: BookingModalProps)
                   className="form-input"
                 />
               </label>
-              <label className="text-sm text-neutral-300">
+              <label className="text-sm text-bone">
                 Email address
                 <input
                   required
@@ -230,7 +230,7 @@ export function BookingModal({ open, onClose, planInterest }: BookingModalProps)
                   className="form-input"
                 />
               </label>
-              <label className="text-sm text-neutral-300">
+              <label className="text-sm text-bone">
                 Phone number
                 <input
                   required
@@ -241,7 +241,7 @@ export function BookingModal({ open, onClose, planInterest }: BookingModalProps)
                   className="form-input"
                 />
               </label>
-              <label className="text-sm text-neutral-300">
+              <label className="text-sm text-bone">
                 Child&apos;s age
                 <select required name="age" className="form-input">
                   <option value="">Select age</option>
@@ -250,7 +250,7 @@ export function BookingModal({ open, onClose, planInterest }: BookingModalProps)
                   ))}
                 </select>
               </label>
-              <label className="text-sm text-neutral-300">
+              <label className="text-sm text-bone">
                 Subject interest
                 <select required name="subject" className="form-input">
                   <option value="">Choose a subject</option>
@@ -261,7 +261,7 @@ export function BookingModal({ open, onClose, planInterest }: BookingModalProps)
                   ))}
                 </select>
               </label>
-              <label className="text-sm text-neutral-300">
+              <label className="text-sm text-bone">
                 Your time zone
                 <select required name="timezone" className="form-input">
                   <option value="">Choose your time zone</option>
@@ -270,7 +270,7 @@ export function BookingModal({ open, onClose, planInterest }: BookingModalProps)
                   ))}
                 </select>
               </label>
-              <label className="text-sm text-neutral-300">
+              <label className="text-sm text-bone">
                 Preferred time slot
                 <select required name="slot" className="form-input">
                   <option value="">Choose your preference</option>
@@ -282,15 +282,20 @@ export function BookingModal({ open, onClose, planInterest }: BookingModalProps)
               {status === 'error' && (
                 <div
                   role="alert"
-                  className="rounded-xl border border-red-500/40 bg-red-500/10 p-4 text-sm leading-6 text-red-200 sm:col-span-2"
+                  // Border at /60 rather than the old /40: the alert's edge is
+                  // what marks it off from the form around it, and /40 over
+                  // ink-raised measured 2.53:1.
+                  className="rounded-xl border border-danger/60 bg-danger/10 p-4 text-sm leading-6 text-danger sm:col-span-2"
                 >
-                  <p className="font-semibold text-red-100">We couldn&apos;t save your request.</p>
-                  {errorMessage && <p className="mt-1 text-xs text-red-200/80">{errorMessage}</p>}
+                  <p className="font-semibold text-danger-strong">
+                    We couldn&apos;t save your request.
+                  </p>
+                  {errorMessage && <p className="mt-1 text-xs text-danger">{errorMessage}</p>}
                   <p className="mt-2 text-xs">
                     Please try again, or email us directly at{' '}
                     <a
                       href={`mailto:${SUPPORT_EMAIL}?subject=Trial%20booking%20request`}
-                      className="font-semibold text-amber-300 underline underline-offset-2"
+                      className="font-semibold text-gold underline underline-offset-2"
                     >
                       {SUPPORT_EMAIL}
                     </a>{' '}
@@ -310,13 +315,13 @@ export function BookingModal({ open, onClose, planInterest }: BookingModalProps)
           </>
         ) : (
           <div className="flex min-h-[340px] flex-col items-center justify-center text-center">
-            <div className="mb-6 rounded-full border border-amber-400/30 bg-amber-400/10 p-4 text-amber-300">
+            <div className="mb-6 rounded-full border border-gold/30 bg-gold/10 p-4 text-gold">
               <Check size={28} />
             </div>
-            <h2 id={headingId} className="font-serif text-[2rem] text-white">
+            <h2 id={headingId} className="font-serif text-[2rem] text-bone">
               You&apos;re on your way.
             </h2>
-            <p className="mt-3 max-w-sm text-sm leading-6 text-neutral-400">
+            <p className="mt-3 max-w-sm text-sm leading-6 text-bone-muted">
               Thank you for reaching out. Our learning concierge will be in touch shortly to arrange
               your child&apos;s trial session.
             </p>

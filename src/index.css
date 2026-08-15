@@ -7,41 +7,111 @@
     scroll-behavior: smooth;
   }
   body {
-    @apply bg-neutral-950 font-sans text-white antialiased;
+    @apply bg-ink font-sans text-bone antialiased;
   }
   ::selection {
-    @apply bg-amber-400 text-black;
+    @apply bg-gold text-ink;
   }
 }
 
+/**
+ * Shared classes come in pairs: the bare name is for DARK grounds, the `-light`
+ * suffix for the cream sections in the middle of the page. They are not
+ * interchangeable — the difference is `gold` vs `gold-deep`, and using the
+ * wrong one drops the text to roughly 2.2:1.
+ */
 @layer components {
+  /* --- Buttons ------------------------------------------------------- */
+  .button-base {
+    @apply inline-flex items-center justify-center gap-2 rounded-full px-5 py-3.5 text-xs font-bold transition duration-300 hover:-translate-y-0.5;
+  }
   .button-gold {
-    @apply inline-flex items-center justify-center gap-2 rounded-full bg-amber-400 px-5 py-3.5 text-xs font-bold text-black transition duration-300 hover:-translate-y-0.5 hover:bg-amber-300 hover:shadow-lg hover:shadow-amber-400/20;
+    @apply button-base bg-gold text-ink hover:bg-gold/90 hover:shadow-lg hover:shadow-gold/20;
+  }
+  /* Solid gold on cream is only a 2.24:1 edge against the page, so the light
+     sections take the deeper gold with cream text instead of a glow.
+     Hover deliberately does NOT lighten the ground: gold-deep/90 over cream
+     drops the cream label to 4.42:1, i.e. the button would fail exactly while
+     being pointed at. The lift and shadow carry the state instead. */
+  .button-gold-deep {
+    @apply button-base bg-gold-deep text-cream hover:shadow-lg hover:shadow-ink/25;
   }
   .button-outline {
-    @apply inline-flex items-center justify-center gap-2 rounded-full border border-amber-400/40 bg-transparent px-5 py-3.5 text-xs font-bold text-amber-200 transition duration-300 hover:-translate-y-0.5 hover:border-amber-300 hover:bg-amber-400/10;
+    @apply button-base border border-gold/40 bg-transparent text-gold hover:border-gold hover:bg-gold/10;
   }
+  /* Full-strength border, not /50: the outline button's edge *is* the control's
+     boundary, and gold-deep/50 on cream measures 2.08:1 against a 3:1 floor. */
+  .button-outline-light {
+    @apply button-base border border-gold-deep bg-transparent text-gold-deep hover:bg-gold-deep/10;
+  }
+
+  /* --- Section furniture --------------------------------------------- */
   .section-kicker {
-    @apply text-[10px] font-bold uppercase tracking-[0.24em] text-amber-400;
+    @apply text-[10px] font-bold uppercase tracking-[0.24em] text-gold;
+  }
+  .section-kicker-light {
+    @apply text-[10px] font-bold uppercase tracking-[0.24em] text-gold-deep;
   }
   /* Sizes and tracking retuned for Gentium Book Plus. Cinzel was an all-caps
      inscriptional face that filled the em; Gentium is a text serif with true
      lowercase and a smaller x-height, so it reads smaller and lighter at the
      same px, and the tight negative tracking Cinzel needed now crowds it. */
   .section-title {
-    @apply mt-3 font-serif text-[2.1rem] leading-[1.15] tracking-[-0.01em] text-white sm:text-[3.4rem];
+    @apply mt-3 font-serif text-[2.1rem] leading-[1.15] tracking-[-0.01em] text-bone sm:text-[3.4rem];
+  }
+  .section-title-light {
+    @apply mt-3 font-serif text-[2.1rem] leading-[1.15] tracking-[-0.01em] text-ink-text sm:text-[3.4rem];
   }
   .section-copy {
-    @apply mt-5 max-w-xl text-sm leading-6 text-neutral-400 sm:text-base;
+    @apply mt-5 max-w-xl text-sm leading-6 text-bone-muted sm:text-base;
   }
+  .section-copy-light {
+    @apply mt-5 max-w-xl text-sm leading-6 text-ink-muted sm:text-base;
+  }
+
+  /* --- Dark-only pieces ---------------------------------------------- */
   .form-input {
-    @apply mt-2 block w-full rounded-xl border border-white/10 bg-black/20 px-4 py-3 text-sm text-white outline-none transition placeholder:text-neutral-600 focus:border-amber-400/60 focus:ring-1 focus:ring-amber-400/40;
+    @apply mt-2 block w-full rounded-xl border border-white/10 bg-ink/40 px-4 py-3 text-sm text-bone outline-none transition placeholder:text-bone-muted focus:border-gold/60 focus:ring-1 focus:ring-gold/40;
   }
   /* Shape and size only — every caller sets its own ground and initial colour. */
   .avatar {
-    @apply flex h-7 w-7 items-center justify-center rounded-full border-2 border-[#171717] text-[9px] font-bold;
+    @apply flex h-7 w-7 items-center justify-center rounded-full border-2 border-ink-raised text-[9px] font-bold;
   }
   .social {
-    @apply flex h-9 w-9 items-center justify-center rounded-full border border-white/10 text-neutral-400 transition hover:border-amber-400/40 hover:text-amber-300;
+    @apply flex h-9 w-9 items-center justify-center rounded-full border border-white/10 text-bone-muted transition hover:border-gold/40 hover:text-gold;
+  }
+}
+
+/**
+ * The dark-to-light conversion added hover lifts on the pricing cards and
+ * colour transitions on the light-section links. Honour the OS setting: keep
+ * the colour change (it carries meaning) and drop the movement.
+ */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  /* Transforms survive a zeroed transition-duration — the lift still happens,
+     it just happens instantly — so the hover translate is removed outright.
+     These are listed by the class that actually reaches the DOM: `@apply
+     button-base` inlines its declarations rather than adding the class, so a
+     `.button-base:hover` rule here would match nothing.
+     Deliberately not a blanket `*:hover` translate reset: the MOST POPULAR
+     badge is centred with -translate-x-1/2, and zeroing that on hover would
+     knock it off centre. */
+  .button-gold:hover,
+  .button-gold-deep:hover,
+  .button-outline:hover,
+  .button-outline-light:hover,
+  .card-lift:hover {
+    transform: none !important;
   }
 }

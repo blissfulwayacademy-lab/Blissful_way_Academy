@@ -15,7 +15,7 @@ export type TutorSubject = 'igbo' | 'maths';
 export interface Tutor {
   /** URL-safe identifier, also used to build `photoUrl`. */
   slug: string;
-  /** Display name including title, e.g. 'Mrs Virginia Ogbebe'. */
+  /** Display name including title, e.g. 'Mrs Virginia Ogbobe'. */
   name: string;
   /** Highest teaching qualification, e.g. 'B.Ed Guidance and Counselling'. */
   qualification: string;
@@ -71,7 +71,11 @@ export interface Programme {
   bullets: string[];
   /** A lucide-react component reference, not a string — e.g. `BookOpen`. */
   icon: LucideIcon;
-  /** Tailwind gradient overlay, e.g. 'from-amber-400/20 via-transparent to-transparent'. */
+  /**
+   * Tailwind gradient overlay for the card's cream ground, e.g.
+   * 'from-gold-deep/15 via-transparent to-transparent'. Must use a light-ground
+   * token — `gold` and `bone` wash out entirely on cream.
+   */
   accent: string;
 }
 

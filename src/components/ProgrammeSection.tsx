@@ -19,16 +19,16 @@ export function ProgrammeSection() {
       className="mx-auto max-w-7xl scroll-mt-[90px] px-5 py-20 sm:px-8 lg:py-28"
     >
       <div className="max-w-2xl">
-        <p className="section-kicker">
+        <p className="section-kicker-light">
           <span lang="ig">{IGBO_KICKERS.programmes}</span>
         </p>
-        <h2 className="section-title">
-          A richer way to <span className="text-amber-400">grow.</span>
+        <h2 className="section-title-light">
+          A richer way to <span className="text-gold-deep">grow.</span>
         </h2>
-        <UliRule />
-        <p className="section-copy">
-          Our programmes are designed around the whole child — building a confident sense of identity
-          alongside the skills to thrive in school and beyond.
+        <UliRule tone="light" />
+        <p className="section-copy-light">
+          Our programmes are designed around the whole child — building a confident sense of
+          identity alongside the skills to thrive in school and beyond.
         </p>
       </div>
       <div className="mt-12 grid gap-5 lg:grid-cols-2">

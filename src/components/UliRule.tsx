@@ -7,11 +7,18 @@
  * than it began — rather than an arc a plotter would produce. The dot at the left
  * terminal is uli's dot-and-line vocabulary.
  *
- * Purely decorative, so it is hidden from assistive technology. One component,
- * no variants: alignment is the caller's business, everything else is fixed so
+ * Purely decorative, so it is hidden from assistive technology. Alignment is
+ * the caller's business, and the only variant is the ground it is drawn on:
+ * `gold` reads at 8:1 on ink but collapses to 2.2:1 on cream, so the light
+ * sections pass `tone="light"` and get `gold-deep`. Everything else is fixed so
  * the motif reads identically everywhere it appears.
  */
-export function UliRule() {
+type UliRuleProps = {
+  /** Which half of the page this instance sits on. Defaults to the dark ground. */
+  tone?: 'dark' | 'light';
+};
+
+export function UliRule({ tone = 'dark' }: UliRuleProps) {
   return (
     <svg
       aria-hidden="true"
@@ -20,7 +27,7 @@ export function UliRule() {
       height="18"
       viewBox="0 0 120 18"
       fill="none"
-      className="mt-6 block text-amber-400/80"
+      className={`mt-6 block ${tone === 'light' ? 'text-gold-deep' : 'text-gold/80'}`}
     >
       <circle cx="3.4" cy="12.2" r="2.5" fill="currentColor" />
       <path

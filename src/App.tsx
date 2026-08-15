@@ -28,16 +28,25 @@ function App() {
   const openTrial = useCallback(() => openBooking(), [openBooking]);
 
   return (
-    <div className="min-h-screen overflow-hidden bg-neutral-950 text-white selection:bg-amber-400 selection:text-black">
+    <div className="min-h-screen overflow-hidden bg-ink text-bone selection:bg-gold selection:text-ink">
       <Header onBookTrial={openTrial} />
 
       <main>
         <Hero onBookTrial={openTrial} />
-        <TrustBar />
-        <ProgrammeSection />
-        <TutorSection />
-        <PricingSection onSelectPlan={openBooking} />
-        <CtaBand onBookTrial={openTrial} />
+
+        {/*
+          The light band. Everything between the hero and the footer sits on
+          cream, and the boundary at each end is a plain background swap on this
+          wrapper — no gradient, no fade, so the edge lands on one pixel row.
+          Sections inside must not set their own dark ground.
+        */}
+        <div className="bg-cream">
+          <TrustBar />
+          <ProgrammeSection />
+          <TutorSection />
+          <PricingSection onSelectPlan={openBooking} />
+          <CtaBand onBookTrial={openTrial} />
+        </div>
       </main>
 
       <Footer />
