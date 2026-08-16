@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { Menu, X } from 'lucide-react';
 import { MobileNav } from '@/components/MobileNav';
-import { LOGO_ALT, LOGO_SRC, NAV_LINKS, TRIAL_PRICE } from '@/lib/content';
+import { NavItem } from '@/components/NavItem';
+import { LOGO_ALT, LOGO_SRC, NAV_LINKS, TRIAL_PRICE, sectionHref } from '@/lib/content';
 
 type HeaderProps = { onBookTrial: () => void };
 
@@ -18,17 +19,18 @@ export function Header({ onBookTrial }: HeaderProps) {
   return (
     <header className="sticky top-0 z-50 border-b border-gold/15 bg-ink/80 backdrop-blur-xl">
       <div className="mx-auto flex h-[76px] max-w-7xl items-center justify-between px-5 sm:px-8">
-        <a href="#home" className="flex items-center gap-3" onClick={closeMenu}>
+        <a href={sectionHref('home')} className="flex items-center gap-3" onClick={closeMenu}>
           <img src={LOGO_SRC} alt={LOGO_ALT} className="h-11 w-auto object-contain" />
           <span className="font-serif text-base tracking-wide text-bone sm:text-lg">
             Blissful Way <span className="text-gold">Academy</span>
           </span>
         </a>
-        <nav className="hidden items-center gap-7 text-[13px] text-bone lg:flex">
+        {/* gap-5 until xl: Safeguarding is a sixth item in a bar that already
+            held logo, five links, and the trial button, and gap-7 across six
+            links overruns the row at 1024px. */}
+        <nav className="hidden items-center gap-5 text-[13px] text-bone lg:flex xl:gap-7">
           {NAV_LINKS.map((link) => (
-            <a key={link.id} href={`#${link.id}`} className="transition hover:text-gold">
-              {link.label}
-            </a>
+            <NavItem key={link.href} link={link} className="transition hover:text-gold" />
           ))}
         </nav>
         <button

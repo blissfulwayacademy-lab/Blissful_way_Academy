@@ -1,6 +1,7 @@
 import { Award, BookOpen, Globe2, MessageCircle, Ruler, Target } from 'lucide-react';
 import type {
   ChildAgeBand,
+  CountryOption,
   NavLink,
   PreferredSlot,
   PricingTier,
@@ -23,12 +24,27 @@ export const TRIAL_PRICE = '$15';
 
 export const SUPPORT_EMAIL = 'hello@blissfulwayacademy.online';
 
+/**
+ * The live origin, no trailing slash.
+ *
+ * index.html is static and cannot import from this module, so its canonical and
+ * og: tags repeat this. Change both together.
+ */
+export const SITE_ORIGIN = 'https://blissfulwayacademy.online';
+
 export const CONTACT = {
   email: SUPPORT_EMAIL,
   /** Digits only, for the tel: href. */
   phoneHref: '+2348104748877',
   /** Spaced for display. */
-  phoneLabel: '+234 8104748877',
+  phoneLabel: '+234 810 474 8877',
+  /**
+   * Same number as `phoneHref`, in wa.me's format: country code and digits only,
+   * no '+' and no spaces. The prefilled `text` opens the chat with the parent's
+   * first message already written, so nobody has to compose an opener cold.
+   */
+  whatsappHref:
+    'https://wa.me/2348104748877?text=Hello%20Blissful%20Way%20Academy%2C%20I%27d%20like%20to%20ask%20about%20lessons%20for%20my%20child',
   location: 'Online · US, UK & Canada',
 };
 
@@ -56,6 +72,22 @@ export const SOCIAL_LINKS = [
   },
 ] as const;
 
+/** The routes the app serves. Every in-site href is built from these. */
+export const ROUTES = {
+  home: '/',
+  safeguarding: '/safeguarding',
+} as const;
+
+/**
+ * A homepage section anchor, absolute from the root.
+ *
+ * '/#pricing' rather than '#pricing': the header and footer render on
+ * /safeguarding too, where a bare fragment would resolve against that path. On
+ * the homepage this is still a same-document fragment, so the browser's native
+ * (and `scroll-behavior: smooth`) jump is unchanged.
+ */
+export const sectionHref = (id: string) => `${ROUTES.home}#${id}`;
+
 /**
  * The single source of truth for navigation.
  *
@@ -63,15 +95,18 @@ export const SOCIAL_LINKS = [
  * everything except Home. Previously all three kept their own copy.
  */
 export const NAV_LINKS: NavLink[] = [
-  { label: 'Home', id: 'home' },
-  { label: 'Igbo Heritage', id: 'igbo-heritage' },
-  { label: 'Early Years Maths', id: 'early-years-maths' },
-  { label: 'Our Tutors', id: 'our-tutors' },
-  { label: 'Pricing', id: 'pricing' },
+  { label: 'Home', href: sectionHref('home') },
+  { label: 'Igbo Heritage', href: sectionHref('igbo-heritage') },
+  { label: 'Early Years Maths', href: sectionHref('early-years-maths') },
+  { label: 'Our Tutors', href: sectionHref('our-tutors') },
+  { label: 'Pricing', href: sectionHref('pricing') },
+  { label: 'Safeguarding', href: ROUTES.safeguarding },
 ];
 
 /** Footer omits Home — the logo above it already links there. */
-export const FOOTER_NAV_LINKS: NavLink[] = NAV_LINKS.filter((link) => link.id !== 'home');
+export const FOOTER_NAV_LINKS: NavLink[] = NAV_LINKS.filter(
+  (link) => link.href !== sectionHref('home'),
+);
 
 export const TRUST_POINTS: TrustPoint[] = [
   {
@@ -137,20 +172,13 @@ const MATHS_SPECIALISATION = 'Early Years Maths & Number Confidence';
 /**
  * The real teaching roster.
  *
- * A `photoUrl` stays commented out until a genuine photograph of that teacher
- * exists at public/assets/images/tutors/{slug}.jpg — uncomment each line as its
- * file is added. Without it the card renders the moss initials tile, which is
- * exactly what the onError fallback would show anyway, minus a failed request
- * per tutor on every page load.
- *
- * PHOTOGRAPH PENDING: Mrs Ewelum Chikaodili.
- *
- * Her previous image was AI-generated or composited stock rather than a
- * photograph of her. On a site whose central claim is a real, TRCN-registered
- * roster with named qualifications, a synthetic portrait discredits the very
- * thing it illustrates — so the initials tile is the honest placeholder until a
- * real photograph is supplied. Only restore that line alongside a genuine
- * photograph of the named teacher.
+ * Every teacher now has a genuine photograph at
+ * public/assets/images/tutors/{slug}.jpg. If a future tutor joins before their
+ * portrait exists, leave `photoUrl` off rather than pointing it at stock or a
+ * generated image: the card falls back to the moss initials tile, which is
+ * exactly what the onError fallback would show anyway. On a site whose central
+ * claim is a real, TRCN-registered roster with named qualifications, a
+ * synthetic portrait discredits the very thing it illustrates.
  */
 export const tutors: Tutor[] = [
   {
@@ -174,9 +202,7 @@ export const tutors: Tutor[] = [
     cdepCertified: true,
     subject: 'igbo',
     specialisation: IGBO_SPECIALISATION,
-    // Photograph pending — see the note above. The previous file was not a
-    // photograph of Mrs Chikaodili.
-    // photoUrl: '/assets/images/tutors/ewelum-chikaodili.jpg',
+    photoUrl: '/assets/images/tutors/ewelum-chikaodili.jpg',
     initials: 'EC',
   },
   {
@@ -255,6 +281,8 @@ export const IGBO_KICKERS = {
   pricing: 'Ọnụahịa',
   /** Closing call to action — "a beginning". */
   cta: 'Mmalite',
+  /** Safeguarding page — "protection / safety". */
+  safeguarding: 'Nchekwa',
 };
 
 export const TRCN_EXPLAINER =
@@ -329,6 +357,20 @@ export const TIMEZONES: TimeZoneOption[] = [
   'US Pacific',
   'Canada Eastern',
   'Canada Pacific',
+  'Other',
+];
+
+/**
+ * Where the family is based, stored in `leads.country`.
+ *
+ * Deliberately short: these are the markets the academy serves, and 'Other'
+ * catches everyone else rather than making a parent scroll a list of 195.
+ */
+export const COUNTRIES: CountryOption[] = [
+  'United Kingdom',
+  'United States',
+  'Canada',
+  'Ireland',
   'Other',
 ];
 

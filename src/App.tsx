@@ -1,14 +1,33 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
+import { Navigate, Route, Routes, useLocation, useNavigationType } from 'react-router-dom';
 import { BookingModal } from '@/components/BookingModal';
-import { CtaBand } from '@/components/CtaBand';
 import { Footer } from '@/components/Footer';
 import { Header } from '@/components/Header';
-import { Hero } from '@/components/Hero';
-import { PricingSection } from '@/components/PricingSection';
-import { ProgrammeSection } from '@/components/ProgrammeSection';
-import { TrustBar } from '@/components/TrustBar';
-import { TutorSection } from '@/components/TutorSection';
+import { Home } from '@/pages/Home';
+import { Safeguarding } from '@/pages/Safeguarding';
+import { ROUTES } from '@/lib/content';
 import type { PlanInterest } from '@/types';
+
+/**
+ * Puts a new page at the top, which a client-side route change does not do on
+ * its own — following Safeguarding from halfway down the homepage would
+ * otherwise open it halfway down.
+ *
+ * Two cases are left alone: a back or forward navigation, where the reader
+ * expects to return to where they were, and any location carrying a fragment,
+ * which names its own scroll target.
+ */
+function ScrollToTop() {
+  const { pathname, hash } = useLocation();
+  const navigationType = useNavigationType();
+
+  useEffect(() => {
+    if (navigationType === 'POP' || hash) return;
+    window.scrollTo(0, 0);
+  }, [pathname, hash, navigationType]);
+
+  return null;
+}
 
 function App() {
   const [modalOpen, setModalOpen] = useState(false);
@@ -27,27 +46,22 @@ function App() {
 
   const openTrial = useCallback(() => openBooking(), [openBooking]);
 
+  // The header, footer, and booking dialog are the shell: they sit outside the
+  // routes so both pages share one header and one modal instance.
   return (
     <div className="min-h-screen overflow-hidden bg-ink text-bone selection:bg-gold selection:text-ink">
+      <ScrollToTop />
       <Header onBookTrial={openTrial} />
 
-      <main>
-        <Hero onBookTrial={openTrial} />
-
-        {/*
-          The light band. Everything between the hero and the footer sits on
-          cream, and the boundary at each end is a plain background swap on this
-          wrapper — no gradient, no fade, so the edge lands on one pixel row.
-          Sections inside must not set their own dark ground.
-        */}
-        <div className="bg-cream">
-          <TrustBar />
-          <ProgrammeSection />
-          <TutorSection />
-          <PricingSection onSelectPlan={openBooking} />
-          <CtaBand onBookTrial={openTrial} />
-        </div>
-      </main>
+      <Routes>
+        <Route
+          path={ROUTES.home}
+          element={<Home onBookTrial={openTrial} onSelectPlan={openBooking} />}
+        />
+        <Route path={ROUTES.safeguarding} element={<Safeguarding />} />
+        {/* An unknown path lands on the homepage rather than an empty shell. */}
+        <Route path="*" element={<Navigate to={ROUTES.home} replace />} />
+      </Routes>
 
       <Footer />
       <BookingModal open={modalOpen} onClose={closeBooking} planInterest={planInterest} />

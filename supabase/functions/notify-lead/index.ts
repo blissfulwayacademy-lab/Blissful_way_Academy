@@ -124,12 +124,15 @@ function buildInternalEmail(record: LeadRecord): Email {
     ['Parent name', show(record.parent_name)],
     ['Email', show(record.email)],
     ['Phone', show(record.phone)],
+    // Country sits with the phone number and time zone rather than down with the
+    // bookkeeping columns: together they are what decides when someone can
+    // actually be called back, which is the first thing read off this alert.
+    ['Country', show(record.country)],
     ['Time zone', show(record.timezone)],
     ["Child's age", show(record.child_age)],
     ['Subject interest', label(record.subject_interest, SUBJECT_LABELS)],
     ['Preferred slot', show(record.preferred_slot)],
     ['Plan interest', label(record.plan_interest, PLAN_LABELS)],
-    ['Country', show(record.country)],
     ['Message', show(record.message)],
     ['Source', show(record.source)],
     ['Status', show(record.status)],

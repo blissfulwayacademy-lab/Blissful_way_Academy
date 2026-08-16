@@ -41,11 +41,17 @@ export interface Tutor {
   initials: string;
 }
 
-/** A single entry in the site's primary navigation. */
+/**
+ * A single entry in the site's primary navigation.
+ *
+ * `href` is always absolute from the site root, because the navigation renders
+ * on every route: a bare '#pricing' would resolve against /safeguarding and go
+ * nowhere. Two forms occur — a homepage anchor ('/#pricing') and a route
+ * ('/safeguarding') — and `NavItem` picks the right element for each.
+ */
 export interface NavLink {
   label: string;
-  /** The target section's DOM id, without the leading '#'. */
-  id: string;
+  href: string;
 }
 
 /** One cell of the four-up trust bar under the hero. */
@@ -111,6 +117,9 @@ export type TimeZoneOption =
   | 'Canada Pacific'
   | 'Other';
 
+/** Options offered by the `country` select in the booking modal. */
+export type CountryOption = 'United Kingdom' | 'United States' | 'Canada' | 'Ireland' | 'Other';
+
 /** Options offered by the `slot` select in the booking modal. */
 export type PreferredSlot =
   | 'UK weekday evening (4-8pm)'
@@ -143,8 +152,8 @@ export interface LeadSubmission {
   email: string;
   /** From the `phone` input. */
   phone?: string;
-  /** Not captured by the booking form yet — reserved for a future country field. */
-  country?: string;
+  /** From the `country` select. */
+  country?: CountryOption;
   /** From the `timezone` select. */
   timezone?: TimeZoneOption;
   /** From the `age` select. */

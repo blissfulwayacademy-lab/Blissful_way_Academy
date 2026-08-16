@@ -3,6 +3,7 @@ import { ArrowRight, Check, X } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 import {
   AGE_BANDS,
+  COUNTRIES,
   SLOTS,
   SUBJECTS,
   SUBJECT_OPTIONS,
@@ -139,6 +140,7 @@ export function BookingModal({ open, onClose, planInterest }: BookingModalProps)
       email,
       phone: field('phone'),
       timezone: pickOption(field('timezone'), TIMEZONES),
+      country: pickOption(field('country'), COUNTRIES),
       child_age: pickOption(field('age'), AGE_BANDS),
       subject_interest: pickOption(field('subject'), SUBJECTS),
       preferred_slot: pickOption(field('slot'), SLOTS),
@@ -267,6 +269,15 @@ export function BookingModal({ open, onClose, planInterest }: BookingModalProps)
                   <option value="">Choose your time zone</option>
                   {TIMEZONES.map((zone) => (
                     <option key={zone}>{zone}</option>
+                  ))}
+                </select>
+              </label>
+              <label className="text-sm text-bone">
+                Country
+                <select required name="country" autoComplete="country-name" className="form-input">
+                  <option value="">Choose your country</option>
+                  {COUNTRIES.map((country) => (
+                    <option key={country}>{country}</option>
                   ))}
                 </select>
               </label>

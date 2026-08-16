@@ -1,5 +1,14 @@
-import { Instagram, Mail, MapPin, MessageCircle, Music2 } from 'lucide-react';
-import { CONTACT, FOOTER_NAV_LINKS, LOGO_ALT, LOGO_SRC, SOCIAL_LINKS } from '@/lib/content';
+import { Instagram, Mail, MapPin, Music2, Phone } from 'lucide-react';
+import { NavItem } from '@/components/NavItem';
+import { WhatsAppLink } from '@/components/WhatsAppLink';
+import {
+  CONTACT,
+  FOOTER_NAV_LINKS,
+  LOGO_ALT,
+  LOGO_SRC,
+  SOCIAL_LINKS,
+  sectionHref,
+} from '@/lib/content';
 
 /** Keyed by the label in SOCIAL_LINKS, so adding a network is a two-line change. */
 const SOCIAL_ICONS = { Instagram, TikTok: Music2 } as const;
@@ -9,7 +18,7 @@ export function Footer() {
     <footer className="border-t border-white/10 bg-ink">
       <div className="mx-auto grid max-w-7xl gap-12 px-5 py-14 sm:px-8 lg:grid-cols-[1.5fr_1fr_1fr]">
         <div>
-          <a href="#home" className="flex items-center gap-3">
+          <a href={sectionHref('home')} className="flex items-center gap-3">
             <img src={LOGO_SRC} alt={LOGO_ALT} className="h-10 w-auto object-contain" />
             <span className="font-serif text-lg tracking-wide text-bone">
               Blissful Way <span className="text-gold">Academy</span>
@@ -43,9 +52,7 @@ export function Footer() {
           <h3 className="text-xs font-bold uppercase tracking-[0.18em] text-gold">Explore</h3>
           <div className="mt-5 flex flex-col gap-3 text-sm text-bone-muted">
             {FOOTER_NAV_LINKS.map((link) => (
-              <a key={link.id} href={`#${link.id}`} className="hover:text-gold">
-                {link.label}
-              </a>
+              <NavItem key={link.href} link={link} className="hover:text-gold" />
             ))}
           </div>
         </div>
@@ -56,10 +63,13 @@ export function Footer() {
               <Mail size={16} className="shrink-0 text-gold" />
               {CONTACT.email}
             </a>
+            {/* The number stays a plain tel: link as well as a WhatsApp one —
+                some parents would rather call than message. */}
             <a href={`tel:${CONTACT.phoneHref}`} className="flex gap-3 hover:text-gold">
-              <MessageCircle size={16} className="shrink-0 text-gold" />
+              <Phone size={16} className="shrink-0 text-gold" />
               {CONTACT.phoneLabel}
             </a>
+            <WhatsAppLink className="flex gap-3 hover:text-gold" />
             <div className="flex gap-3">
               <MapPin size={16} className="shrink-0 text-gold" />
               {CONTACT.location}

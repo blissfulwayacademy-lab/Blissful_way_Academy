@@ -1,4 +1,5 @@
 import { ArrowRight } from 'lucide-react';
+import { NavItem } from '@/components/NavItem';
 import { NAV_LINKS, TRIAL_PRICE } from '@/lib/content';
 
 type MobileNavProps = {
@@ -12,9 +13,7 @@ export function MobileNav({ onNavigate, onBookTrial }: MobileNavProps) {
     <nav className="border-t border-white/10 bg-ink px-5 py-5 lg:hidden">
       <div className="flex flex-col gap-5 text-sm text-bone">
         {NAV_LINKS.map((link) => (
-          <a key={link.id} href={`#${link.id}`} onClick={onNavigate}>
-            {link.label}
-          </a>
+          <NavItem key={link.href} link={link} onClick={onNavigate} />
         ))}
         <button onClick={onBookTrial} className="button-gold w-full">
           Book {TRIAL_PRICE} Trial <ArrowRight size={16} />
