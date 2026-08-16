@@ -58,7 +58,7 @@ function App() {
           path={ROUTES.home}
           element={<Home onBookTrial={openTrial} onSelectPlan={openBooking} />}
         />
-        <Route path={ROUTES.safeguarding} element={<Safeguarding />} />
+        <Route path={ROUTES.safeguarding} element={<Safeguarding onBookTrial={openTrial} />} />
         {/* An unknown path lands on the homepage rather than an empty shell. */}
         <Route path="*" element={<Navigate to={ROUTES.home} replace />} />
       </Routes>

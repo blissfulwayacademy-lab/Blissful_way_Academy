@@ -1,7 +1,9 @@
 import { useEffect, type ReactNode } from 'react';
+import { Link } from 'react-router-dom';
+import { ArrowRight } from 'lucide-react';
 import { UliRule } from '@/components/UliRule';
 import { WhatsAppLink } from '@/components/WhatsAppLink';
-import { IGBO_KICKERS, ROUTES, SITE_ORIGIN, SUPPORT_EMAIL } from '@/lib/content';
+import { IGBO_KICKERS, ROUTES, SITE_ORIGIN, SUPPORT_EMAIL, TRIAL_PRICE } from '@/lib/content';
 
 const PAGE_TITLE = 'Safeguarding | Blissful Way Academy';
 
@@ -59,7 +61,9 @@ function Commitment({ heading, children }: { heading: string; children: ReactNod
   );
 }
 
-export function Safeguarding() {
+type SafeguardingProps = { onBookTrial: () => void };
+
+export function Safeguarding({ onBookTrial }: SafeguardingProps) {
   usePageMeta(PAGE_TITLE, ROUTES.safeguarding);
 
   return (
@@ -91,9 +95,9 @@ export function Safeguarding() {
           <Commitment heading="What we do not yet have">
             <p>We do not currently hold criminal record checks for our tutors.</p>
             <p>
-              We are working towards Nigeria Police Force character certificates for every tutor,
-              and we will publish that here when it is complete. We would rather tell you this
-              plainly than let you assume otherwise.
+              We are obtaining Nigeria Police Force character certificates for every tutor by the
+              end of 2026, and we will publish that here when it becomes available. We would rather
+              tell you this plainly than let you assume otherwise.
             </p>
           </Commitment>
 
@@ -143,6 +147,28 @@ export function Safeguarding() {
             </p>
             <WhatsAppLink tone="light" className="button-outline-light mt-2" />
           </Commitment>
+
+          {/* A coda rather than another commitment, so it takes the page's
+              border rhythm but no heading — nothing here is being promised. */}
+          <section className="border-t border-ink-text/10 pt-10">
+            <p className="text-sm leading-7 text-ink-muted sm:text-base">
+              That is everything we can tell you. The best next step is a single lesson — and you
+              are welcome to sit in on it.
+            </p>
+            <div className="mt-7 flex flex-wrap items-center gap-x-8 gap-y-4">
+              {/* gold-deep, not gold: this section is on cream, where solid gold
+                  measures 2.24:1. See the note in tailwind.config.js. */}
+              <button onClick={onBookTrial} className="button-gold-deep">
+                Book a {TRIAL_PRICE} trial session <ArrowRight size={17} />
+              </button>
+              <Link
+                to={ROUTES.home}
+                className="text-sm text-ink-muted underline underline-offset-4 hover:text-gold-deep"
+              >
+                Back to the homepage
+              </Link>
+            </div>
+          </section>
         </div>
       </div>
     </main>
