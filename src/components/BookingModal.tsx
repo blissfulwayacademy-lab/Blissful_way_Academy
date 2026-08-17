@@ -3,13 +3,15 @@ import { ArrowRight, Check, X } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 import {
   AGE_BANDS,
+  BOOKING_COPY,
   COUNTRIES,
+  ROUTES,
   SLOTS,
   SUBJECTS,
   SUBJECT_OPTIONS,
   SUPPORT_EMAIL,
   TIMEZONES,
-  TRIAL_PRICE,
+  bookingVariant,
 } from '@/lib/content';
 import type { LeadSubmission, PlanInterest } from '@/types';
 
@@ -42,6 +44,11 @@ export function BookingModal({ open, onClose, planInterest }: BookingModalProps)
   const dialogRef = useRef<HTMLDivElement>(null);
   const restoreFocusRef = useRef<HTMLElement | null>(null);
   const headingId = useId();
+
+  // Which words the dialog wears. The form itself is identical either way — a
+  // waitlist needs every field a trial does, and country and time zone decide
+  // which cohort a child can be placed in.
+  const copy = BOOKING_COPY[bookingVariant(planInterest)];
 
   useEffect(() => {
     document.body.style.overflow = open ? 'hidden' : '';
@@ -195,15 +202,13 @@ export function BookingModal({ open, onClose, planInterest }: BookingModalProps)
         {!submitted ? (
           <>
             <span className="text-xs font-semibold uppercase tracking-[0.24em] text-gold">
-              Start your journey
+              {copy.kicker}
             </span>
             <h2 id={headingId} className="mt-3 font-serif text-[2rem] text-bone sm:text-[2.4rem]">
-              Book a <span className="text-gold">{TRIAL_PRICE} trial</span>
+              {copy.heading}
+              {copy.headingAccent && <span className="text-gold"> {copy.headingAccent}</span>}
             </h2>
-            <p className="mt-3 max-w-md text-sm leading-6 text-bone-muted">
-              Tell us a little about your family and we&apos;ll help you find the right first
-              session.
-            </p>
+            <p className="mt-3 max-w-md text-sm leading-6 text-bone-muted">{copy.subtitle}</p>
             <form onSubmit={handleSubmit} className="mt-7 grid gap-4 sm:grid-cols-2">
               {/* Honeypot: hidden from sighted users, screen readers, and the tab
                   order, so only an automated form filler will ever populate it. */}
@@ -305,21 +310,41 @@ export function BookingModal({ open, onClose, planInterest }: BookingModalProps)
                   <p className="mt-2 text-xs">
                     Please try again, or email us directly at{' '}
                     <a
-                      href={`mailto:${SUPPORT_EMAIL}?subject=Trial%20booking%20request`}
+                      href={`mailto:${SUPPORT_EMAIL}?subject=${encodeURIComponent(copy.errorMailSubject)}`}
                       className="font-semibold text-gold underline underline-offset-2"
                     >
                       {SUPPORT_EMAIL}
                     </a>{' '}
-                    and we&apos;ll arrange your trial by hand.
+                    {copy.errorTail}
                   </p>
                 </div>
               )}
+              {/* Deliberately a statement, not a checkbox. A tickbox is one more
+                  thing to fail validation on between a parent and their trial;
+                  bone-muted holds 7.27:1 on this ground, so "small and quiet"
+                  costs no legibility.
+
+                  A new tab rather than a router <Link>: navigating in place
+                  would unmount the form and discard everything already typed,
+                  which is exactly the friction this line is meant to avoid. */}
+              <p className="mt-2 text-xs leading-5 text-bone-muted sm:col-span-2">
+                {copy.consentLead} you agree to our{' '}
+                <a
+                  href={ROUTES.terms}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-semibold text-gold underline underline-offset-2"
+                >
+                  Terms of Service
+                </a>
+                .
+              </p>
               <button
                 type="submit"
                 disabled={submitting}
-                className="button-gold mt-2 disabled:cursor-not-allowed disabled:opacity-60 sm:col-span-2"
+                className="button-gold disabled:cursor-not-allowed disabled:opacity-60 sm:col-span-2"
               >
-                {submitting ? 'Sending your request…' : 'Request my trial'}
+                {submitting ? 'Sending your request…' : copy.submitLabel}
                 {!submitting && <ArrowRight size={17} />}
               </button>
             </form>
@@ -330,12 +355,9 @@ export function BookingModal({ open, onClose, planInterest }: BookingModalProps)
               <Check size={28} />
             </div>
             <h2 id={headingId} className="font-serif text-[2rem] text-bone">
-              You&apos;re on your way.
+              {copy.successHeading}
             </h2>
-            <p className="mt-3 max-w-sm text-sm leading-6 text-bone-muted">
-              Thank you for reaching out. Our learning concierge will be in touch shortly to arrange
-              your child&apos;s trial session.
-            </p>
+            <p className="mt-3 max-w-sm text-sm leading-6 text-bone-muted">{copy.successBody}</p>
             <button type="button" onClick={onClose} className="button-outline mt-7">
               Return to the academy
             </button>

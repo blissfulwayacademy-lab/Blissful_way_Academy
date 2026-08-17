@@ -88,14 +88,27 @@ export interface Programme {
 /** One entry in the `pricing` array (src/lib/content.ts). */
 export interface PricingTier {
   name: string;
-  /** Pre-formatted display string including the currency symbol, e.g. '$100'. */
-  price: string;
-  /** Secondary rate line, e.g. '$25 / hour'. */
-  detail: string;
+  /**
+   * Pre-formatted display string including the currency symbol, e.g. '$100'.
+   *
+   * Absent on a tier that cannot be bought yet. `PricingCard` treats that
+   * absence as the single switch between a purchasable plan and a waitlist, so
+   * a tier can never show both a price and a waitlist button.
+   */
+  price?: string;
+  /** Secondary rate line, e.g. '$25 / hour'. Absent alongside `price`. */
+  detail?: string;
+  /** Shown in place of the price on a waitlist tier, e.g. 'Opening soon'. */
+  status?: string;
   description: string;
+  /** Rendered as a ticked checklist. Empty on a waitlist tier. */
   features: string[];
+  /** Reassurance under the button, e.g. the first-month refund. */
+  guarantee?: string;
   /** Marks the highlighted 'MOST POPULAR' tier. */
   featured: boolean;
+  /** The card's button label, e.g. 'Claim your spot' or 'Join the waitlist'. */
+  ctaLabel: string;
   /** Recorded as `plan_interest` when this card opens the booking modal. */
   planInterest: PlanInterest;
 }
@@ -132,8 +145,46 @@ export type PreferredSlot =
  *
  * The three pricing cards report the tier the parent clicked; the header, hero,
  * mobile drawer, and closing CTA all report a plain trial request.
+ *
+ * 'cohort' is retained but no longer reachable from the site: the Group Cohort
+ * card became a waitlist and now reports 'cohort_waitlist'. Rows inserted while
+ * cohorts were sold still carry the old value, so removing it here would
+ * mistype existing data.
  */
-export type PlanInterest = 'trial' | 'starter' | 'dual' | 'cohort';
+export type PlanInterest = 'trial' | 'starter' | 'dual' | 'cohort' | 'cohort_waitlist';
+
+/**
+ * Which set of copy the booking dialog wears.
+ *
+ * Derived from `PlanInterest` rather than passed alongside it, so a new call to
+ * action cannot open the dialog wearing the wrong words.
+ */
+export type BookingVariant = 'trial' | 'waitlist';
+
+/**
+ * Everything the booking dialog says, for one variant.
+ *
+ * The heading is split rather than held as markup because this file and
+ * content.ts are plain `.ts` — `headingAccent` is rendered in gold after
+ * `heading`, and is omitted where the whole heading is one weight.
+ */
+export interface BookingCopy {
+  /** Small label above the heading. Rendered uppercase by its own class. */
+  kicker: string;
+  heading: string;
+  /** Gold-accented tail of the heading, e.g. '$15 trial'. */
+  headingAccent?: string;
+  subtitle: string;
+  submitLabel: string;
+  /** Opens the terms sentence, e.g. 'By booking' — the rest is fixed. */
+  consentLead: string;
+  /** `subject=` on the mailto in the error fallback. */
+  errorMailSubject: string;
+  /** Closes the error fallback after the support address. */
+  errorTail: string;
+  successHeading: string;
+  successBody: string;
+}
 
 /**
  * A row in `public.leads`.

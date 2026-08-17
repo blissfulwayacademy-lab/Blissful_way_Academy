@@ -1,8 +1,11 @@
 import { Award, BookOpen, Globe2, MessageCircle, Ruler, Target } from 'lucide-react';
 import type {
+  BookingCopy,
+  BookingVariant,
   ChildAgeBand,
   CountryOption,
   NavLink,
+  PlanInterest,
   PreferredSlot,
   PricingTier,
   Programme,
@@ -76,7 +79,17 @@ export const SOCIAL_LINKS = [
 export const ROUTES = {
   home: '/',
   safeguarding: '/safeguarding',
+  terms: '/terms',
 } as const;
+
+/**
+ * The date shown at the foot of the Terms page.
+ *
+ * Deliberately a constant rather than a literal in the page: revising the terms
+ * is then a one-line change here, and the date cannot be forgotten in the diff.
+ * Written as a display string because it is only ever shown, never compared.
+ */
+export const TERMS_LAST_UPDATED = '17 August 2026';
 
 /**
  * A homepage section anchor, absolute from the root.
@@ -103,10 +116,17 @@ export const NAV_LINKS: NavLink[] = [
   { label: 'Safeguarding', href: ROUTES.safeguarding },
 ];
 
-/** Footer omits Home — the logo above it already links there. */
-export const FOOTER_NAV_LINKS: NavLink[] = NAV_LINKS.filter(
-  (link) => link.href !== sectionHref('home'),
-);
+/**
+ * Footer omits Home — the logo above it already links there — and adds Terms.
+ *
+ * Terms is footer-only by design. Safeguarding answers a question a parent is
+ * actively asking and earns its place in the header; terms are read once, if at
+ * all, and would dilute a nav bar that is already at six items.
+ */
+export const FOOTER_NAV_LINKS: NavLink[] = [
+  ...NAV_LINKS.filter((link) => link.href !== sectionHref('home')),
+  { label: 'Terms of Service', href: ROUTES.terms },
+];
 
 export const TRUST_POINTS: TrustPoint[] = [
   {
@@ -283,10 +303,21 @@ export const IGBO_KICKERS = {
   cta: 'Mmalite',
   /** Safeguarding page — "protection / safety". */
   safeguarding: 'Nchekwa',
+  /** Terms page — "agreement". */
+  terms: 'Nkwekọrịta',
 };
 
 export const TRCN_EXPLAINER =
   'TRCN is the Teachers Registration Council of Nigeria, the statutory body that licenses and regulates teaching practice nationwide.';
+
+/**
+ * The money-back line carried by the two plans a parent can actually buy.
+ *
+ * Deliberately not on the Group Cohort tier: nothing has been paid for a
+ * waitlist, so there is nothing to guarantee. The full terms behind this are on
+ * the Terms page under "Your first month — our guarantee".
+ */
+const MONEY_BACK_GUARANTEE = 'First month money-back guarantee';
 
 export const pricing: PricingTier[] = [
   {
@@ -299,7 +330,9 @@ export const pricing: PricingTier[] = [
       '1-on-1 Igbo or Early Years Maths',
       'Personalised learning plan',
     ],
+    guarantee: MONEY_BACK_GUARANTEE,
     featured: false,
+    ctaLabel: 'Claim your spot',
     planInterest: 'starter',
   },
   {
@@ -312,25 +345,76 @@ export const pricing: PricingTier[] = [
       '4 hrs Igbo + 4 hrs Early Years Maths',
       'Progress notes for parents',
     ],
+    guarantee: MONEY_BACK_GUARANTEE,
     featured: true,
+    ctaLabel: 'Claim your spot',
     planInterest: 'dual',
   },
   {
-    name: 'Group Cohort',
-    price: '$60',
-    // Not the trial price — this is the Group Cohort hourly rate, which happens
-    // to be the same figure. Deliberately not TRIAL_PRICE.
-    detail: '$15 / hour',
-    description: 'Make meaningful connections while learning Igbo in a small, joyful community.',
-    features: [
-      '4 group sessions per month',
-      '3–5 children per cohort',
-      'Conversation-led learning',
-    ],
+    /*
+     * A waitlist, not a plan. `price` and `detail` are absent rather than empty
+     * — that absence is what PricingCard reads to render the tier as not yet
+     * purchasable, so it cannot show a buy affordance for something that cannot
+     * be bought. The feature checklist is gone for the same reason: ticks next
+     * to a price read as "what you get", and nothing is being got yet.
+     */
+    name: 'Group Cohort (Igbo)',
+    status: 'Opening soon',
+    description:
+      'Small cohorts of 3–5 children, opening once enough families in the same age group and time zone have registered.',
+    features: [],
     featured: false,
-    planInterest: 'cohort',
+    ctaLabel: 'Join the waitlist',
+    planInterest: 'cohort_waitlist',
   },
 ];
+
+/**
+ * The booking dialog's copy, one set per variant.
+ *
+ * The same form serves both — a waitlist needs exactly the fields a trial does,
+ * and country and time zone matter more here than anywhere else on the site
+ * since together they decide which cohort a child can join. Only the words
+ * around the fields change.
+ *
+ * Nothing in the waitlist variant may mention the trial or its price: a parent
+ * registering interest in a cohort has not booked a lesson and is not paying
+ * for one.
+ */
+export const BOOKING_COPY: Record<BookingVariant, BookingCopy> = {
+  trial: {
+    kicker: 'Start your journey',
+    heading: 'Book a',
+    headingAccent: `${TRIAL_PRICE} trial`,
+    subtitle:
+      "Tell us a little about your family and we'll help you find the right first session.",
+    submitLabel: 'Request my trial',
+    consentLead: 'By booking',
+    errorMailSubject: 'Trial booking request',
+    errorTail: "and we'll arrange your trial by hand.",
+    successHeading: "You're on your way.",
+    successBody:
+      "Thank you for reaching out. Our learning concierge will be in touch shortly to arrange your child's trial session.",
+  },
+  waitlist: {
+    kicker: 'Join the waitlist',
+    heading: 'Join the cohort waitlist',
+    subtitle:
+      "Tell us about your child and we'll let you know as soon as a cohort opens in their age group and time zone.",
+    submitLabel: 'Join the waitlist',
+    consentLead: 'By joining',
+    errorMailSubject: 'Cohort waitlist request',
+    errorTail: "and we'll add you to the list by hand.",
+    successHeading: "You're on the list.",
+    successBody:
+      "We'll be in touch as soon as we have enough families in your child's age group and time zone to start a cohort.",
+  },
+};
+
+/** Which copy the dialog wears for the call to action that opened it. */
+export function bookingVariant(plan: PlanInterest): BookingVariant {
+  return plan === 'cohort_waitlist' ? 'waitlist' : 'trial';
+}
 
 export const AGE_BANDS: ChildAgeBand[] = ['4–6 years', '7–9 years', '10–12 years', '13–16 years'];
 

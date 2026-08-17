@@ -67,7 +67,9 @@ const PLAN_LABELS: Record<string, string> = {
   trial: 'Trial session',
   starter: 'Starter Bundle',
   dual: 'Heritage & STEM Dual Programme',
+  // Retained for rows stored while cohorts were sold as a plan.
   cohort: 'Group Cohort',
+  cohort_waitlist: 'Group Cohort — WAITLIST',
 };
 
 /** Escapes text before it goes into an HTML email body. */
@@ -101,6 +103,17 @@ function formatTimestamp(iso: string | undefined): string {
     timeStyle: 'short',
     timeZone: 'Europe/London',
   }).format(parsed);
+}
+
+/**
+ * True when this row is a cohort waitlist registration rather than a booking.
+ *
+ * The two differ only in wording, never in plumbing: same form, same columns,
+ * same two emails. Everything downstream branches on this one predicate rather
+ * than forking into a second copy of the function.
+ */
+function isWaitlist(record: LeadRecord): boolean {
+  return record.plan_interest === 'cohort_waitlist';
 }
 
 /** True when the hidden honeypot field was populated, in any of its stored forms. */
@@ -142,10 +155,22 @@ function buildInternalEmail(record: LeadRecord): Email {
 
   const text = rows.map(([key, value]) => `${key}: ${value}`).join('\n');
 
+  // The subject is the whole point of this email in a full inbox: a booking and
+  // an expression of interest need different responses, and which is which has
+  // to be readable without opening anything.
+  const waitlist = isWaitlist(record);
+  const subject = waitlist
+    ? `Cohort waitlist — ${show(record.parent_name)}`
+    : `New trial booking — ${show(record.parent_name)}`;
+  const title = waitlist ? 'New cohort waitlist registration' : 'New trial booking';
+  const lede = waitlist
+    ? `${show(record.parent_name)} joined the Group Cohort waitlist.`
+    : `${show(record.parent_name)} submitted the booking form.`;
+
   const html = `
     <div style="font-family:-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;font-size:15px;color:#111;">
-      <h2 style="margin:0 0 4px;font-size:18px;">New trial booking</h2>
-      <p style="margin:0 0 16px;color:#555;">${escapeHtml(show(record.parent_name))} submitted the booking form.</p>
+      <h2 style="margin:0 0 4px;font-size:18px;">${escapeHtml(title)}</h2>
+      <p style="margin:0 0 16px;color:#555;">${escapeHtml(lede)}</p>
       <table cellpadding="0" cellspacing="0" style="border-collapse:collapse;">
         ${rows
           .map(
@@ -162,7 +187,7 @@ function buildInternalEmail(record: LeadRecord): Email {
 
   return {
     to: INTERNAL_INBOX,
-    subject: `New trial booking — ${show(record.parent_name)}`,
+    subject,
     html,
     text,
     // Replying to the alert writes straight back to the parent.
@@ -174,28 +199,57 @@ function buildParentEmail(record: LeadRecord): Email | null {
   const to = record.email?.trim();
   if (!to) return null;
 
+  const waitlist = isWaitlist(record);
   const firstName = show(record.parent_name).split(/\s+/)[0];
   const subject = label(record.subject_interest, SUBJECT_LABELS);
   const age = show(record.child_age);
   const slot = show(record.preferred_slot);
+  const timezone = show(record.timezone);
 
+  /*
+   * What we read back to the parent.
+   *
+   * The waitlist swaps the preferred slot for the time zone: age band and time
+   * zone are the two things that decide which cohort a child can be placed in,
+   * so the note explaining the wait should show the values it turns on.
+   */
   const confirmations: string[] = [];
   if (subject !== '—') confirmations.push(`Subject: ${subject}`);
   if (age !== '—') confirmations.push(`Child's age: ${age}`);
-  if (slot !== '—') confirmations.push(`Preferred time: ${slot}`);
+  if (waitlist) {
+    if (timezone !== '—') confirmations.push(`Time zone: ${timezone}`);
+  } else if (slot !== '—') {
+    confirmations.push(`Preferred time: ${slot}`);
+  }
+
+  /*
+   * Only the wording differs between the two. A waitlist registration gets no
+   * 24-hour promise, because there is nothing to reply about yet — promising a
+   * reply we have no reason to send is how a good policy becomes a broken one.
+   */
+  const opening = waitlist
+    ? 'Thank you for joining the waitlist for our Igbo group cohorts. Your place on the list is registered.'
+    : 'Thank you for requesting a trial lesson with Blissful Way Academy.';
+
+  const closing = waitlist
+    ? [
+        'Cohorts are small — three to five children — and we open one as soon as enough families in the same age group and time zone have joined. That is why we cannot yet give you a date.',
+        `We will email you as soon as a cohort opens for your child. There is nothing you need to do in the meantime, and if you would like to ask us anything, write to ${INTERNAL_INBOX} and it reaches us directly.`,
+      ]
+    : [
+        'We will reply within 24 hours to agree a time that suits your family.',
+        `If you need to add anything in the meantime, just reply to this email or write to ${INTERNAL_INBOX} — it reaches us directly.`,
+      ];
 
   const text = [
     `Dear ${firstName},`,
     '',
-    'Thank you for requesting a trial lesson with Blissful Way Academy.',
+    opening,
     '',
     ...(confirmations.length > 0
       ? ['Here is what you told us:', ...confirmations.map((line) => `  • ${line}`), '']
       : []),
-    'We will reply within 24 hours to agree a time that suits your family.',
-    '',
-    `If you need to add anything in the meantime, just reply to this email or write to ${INTERNAL_INBOX} — it reaches us directly.`,
-    '',
+    ...closing.flatMap((paragraph) => [paragraph, '']),
     'Warm regards,',
     'Blissful Way Academy',
   ].join('\n');
@@ -203,7 +257,7 @@ function buildParentEmail(record: LeadRecord): Email | null {
   const html = `
     <div style="font-family:-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;font-size:15px;line-height:1.6;color:#111;">
       <p style="margin:0 0 14px;">Dear ${escapeHtml(firstName)},</p>
-      <p style="margin:0 0 14px;">Thank you for requesting a trial lesson with Blissful Way Academy.</p>
+      <p style="margin:0 0 14px;">${escapeHtml(opening)}</p>
       ${
         confirmations.length > 0
           ? `<p style="margin:0 0 8px;">Here is what you told us:</p>
@@ -212,15 +266,24 @@ function buildParentEmail(record: LeadRecord): Email | null {
       </ul>`
           : ''
       }
-      <p style="margin:0 0 14px;">We will reply within 24 hours to agree a time that suits your family.</p>
-      <p style="margin:0 0 14px;">If you need to add anything in the meantime, just reply to this email or write to <a href="mailto:${INTERNAL_INBOX}" style="color:#b45309;">${INTERNAL_INBOX}</a> — it reaches us directly.</p>
+      ${closing
+        .map(
+          (paragraph) =>
+            `<p style="margin:0 0 14px;">${escapeHtml(paragraph).replace(
+              INTERNAL_INBOX,
+              `<a href="mailto:${INTERNAL_INBOX}" style="color:#b45309;">${INTERNAL_INBOX}</a>`,
+            )}</p>`,
+        )
+        .join('\n      ')}
       <p style="margin:0;">Warm regards,<br /><strong>Blissful Way Academy</strong></p>
     </div>
   `.trim();
 
   return {
     to,
-    subject: 'Your trial lesson request — Blissful Way Academy',
+    subject: waitlist
+      ? 'You are on the cohort waitlist — Blissful Way Academy'
+      : 'Your trial lesson request — Blissful Way Academy',
     html,
     text,
     replyTo: INTERNAL_INBOX,

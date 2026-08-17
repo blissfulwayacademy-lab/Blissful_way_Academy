@@ -5,6 +5,7 @@ import { Footer } from '@/components/Footer';
 import { Header } from '@/components/Header';
 import { Home } from '@/pages/Home';
 import { Safeguarding } from '@/pages/Safeguarding';
+import { Terms } from '@/pages/Terms';
 import { ROUTES } from '@/lib/content';
 import type { PlanInterest } from '@/types';
 
@@ -59,6 +60,7 @@ function App() {
           element={<Home onBookTrial={openTrial} onSelectPlan={openBooking} />}
         />
         <Route path={ROUTES.safeguarding} element={<Safeguarding onBookTrial={openTrial} />} />
+        <Route path={ROUTES.terms} element={<Terms />} />
         {/* An unknown path lands on the homepage rather than an empty shell. */}
         <Route path="*" element={<Navigate to={ROUTES.home} replace />} />
       </Routes>
