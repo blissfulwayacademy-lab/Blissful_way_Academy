@@ -62,6 +62,37 @@ export interface TrustPoint {
   text: string;
 }
 
+/** One age band's worth of end-of-term outcomes on a programme card. */
+export interface ProgrammeOutcomeBand {
+  /**
+   * The numbers alone, e.g. '10-12'. Four of these have to sit in a row on a
+   * phone, so the word 'Ages' lives in the tab's `aria-label` instead of here.
+   */
+  label: string;
+  /** Overrides `ProgrammeOutcomes.lead` — for a band old enough not to be a child. */
+  lead?: string;
+  /** What a child of this age can do by the end of the term, one per line. */
+  items: string[];
+  /** An extra promise this band alone carries, shown under its list. */
+  note?: string;
+}
+
+/**
+ * The end-of-term outcomes shown on a programme card.
+ *
+ * `ProgrammeCard` shows one band at a time — behind a select on a phone, behind
+ * tabs from `sm` up — so the lists never add their heights together however
+ * many bands there are. Keep the lists to five or so items each: lopsided ones
+ * make the two cards jump in height as a parent switches band.
+ */
+export interface ProgrammeOutcomes {
+  /** One line between the description and the band picker, e.g. how the term runs. */
+  intro: string;
+  /** The sentence each band's list completes, unless the band overrides it. */
+  lead: string;
+  bands: ProgrammeOutcomeBand[];
+}
+
 /** One entry in the `programmes` array (src/lib/content.ts). */
 export interface Programme {
   /**
@@ -73,8 +104,8 @@ export interface Programme {
   eyebrow: string;
   title: string;
   description: string;
-  /** Checklist items rendered under the description. */
-  bullets: string[];
+  /** Age-banded outcomes rendered under the description. */
+  outcomes: ProgrammeOutcomes;
   /** A lucide-react component reference, not a string — e.g. `BookOpen`. */
   icon: LucideIcon;
   /**

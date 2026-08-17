@@ -43,9 +43,9 @@ export function Terms() {
         <div className="mt-16 space-y-14">
           <PageSection heading="Who we are">
             <p>
-              Blissful Way Academy provides live online Igbo language and early years mathematics
-              lessons to children aged 4 to 9, taught by teachers registered with the Teachers
-              Registration Council of Nigeria.
+              Blissful Way Academy provides live online Igbo language lessons to children aged 4 to
+              16, and early years mathematics lessons to children aged 4 to 9, taught by teachers
+              registered with the Teachers Registration Council of Nigeria.
             </p>
             <p>
               We are operated by Igwe Chinagolum Arinzechukwu, trading as Blissful Way Academy, of

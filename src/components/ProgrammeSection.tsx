@@ -1,6 +1,7 @@
+import { Mail } from 'lucide-react';
 import { ProgrammeCard } from '@/components/ProgrammeCard';
 import { UliRule } from '@/components/UliRule';
-import { IGBO_KICKERS, programmes } from '@/lib/content';
+import { IGBO_KICKERS, PROGRAMME_FOOTNOTE, programmes } from '@/lib/content';
 
 /**
  * The section as a whole answers to the first programme's slug, so that anchor
@@ -40,6 +41,13 @@ export function ProgrammeSection() {
           />
         ))}
       </div>
+      {/* Spans the pair because it is true of both programmes. Centred and
+          ruled off so it reads as a closing note on the section rather than a
+          stray bullet belonging to the card above it. */}
+      <p className="mt-5 flex items-center justify-center gap-3 rounded-2xl border border-gold-deep/20 bg-gold-deep/5 px-6 py-4 text-center text-sm leading-6 text-ink-text">
+        <Mail size={16} strokeWidth={1.75} className="hidden shrink-0 text-gold-deep sm:block" />
+        {PROGRAMME_FOOTNOTE}
+      </p>
     </section>
   );
 }

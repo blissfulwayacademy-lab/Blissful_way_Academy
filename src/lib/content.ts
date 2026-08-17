@@ -142,7 +142,7 @@ export const TRUST_POINTS: TrustPoint[] = [
   {
     icon: MessageCircle,
     title: 'Cultural immersion',
-    text: 'Native speech, stories & heritage',
+    text: 'Native speech and stories for ages 4–16',
   },
   {
     icon: Target,
@@ -151,18 +151,83 @@ export const TRUST_POINTS: TrustPoint[] = [
   },
 ];
 
+/**
+ * The sentence both programmes' outcome lists complete.
+ *
+ * Shared so the two cards make a parent the same promise in the same words: a
+ * term is twelve weeks, and this is what it buys.
+ */
+const OUTCOMES_LEAD = 'After twelve weeks your child will:';
+
+/** The same promise to the parent of a fourteen-year-old, who is not a child. */
+const OUTCOMES_LEAD_TEEN = 'After twelve weeks your teenager will:';
+
+/**
+ * The take-home sheet, stated once beneath the pair rather than on each card.
+ *
+ * It is true of every lesson on both programmes, and it is the detail parents
+ * do not expect — repeating it card by card reads as a feature list item and
+ * costs it that weight.
+ */
+export const PROGRAMME_FOOTNOTE =
+  "Every lesson ends with a one-page sheet of the week's words, sent to you.";
+
 export const programmes: Programme[] = [
   {
     slug: 'igbo-heritage',
     eyebrow: '01 / Heritage',
-    title: 'Igbo Heritage & Language Immersion',
+    title: 'Igbo Heritage & Language Immersion (ages 4-16)',
     description:
       'Give your child the confidence to speak, understand, and celebrate the language that connects them to home.',
-    bullets: [
-      'Native speech & everyday conversation',
-      'Phonics, storytelling, and proverbs',
-      'Cultural history taught through play',
-    ],
+    outcomes: {
+      intro:
+        'Twelve-week terms for ages 4 to 16, taught by age band, with a placement lesson first.',
+      lead: OUTCOMES_LEAD,
+      bands: [
+        {
+          label: '4-6',
+          items: [
+            'Greet you and answer in Igbo without prompting',
+            'Name everyone in your family in Igbo',
+            'Follow spoken instructions in Igbo without gestures',
+            'Count to ten, name colours, foods and animals',
+            'Hold a two-minute conversation with you',
+          ],
+        },
+        {
+          label: '7-9',
+          items: [
+            'Introduce themselves and say where your family is from',
+            'Read and write the Igbo alphabet, including ị, ọ and ụ',
+            'Hear and mark tone',
+            'Explain three Igbo proverbs',
+            'Read a short passage aloud and write five sentences about themselves',
+          ],
+        },
+        {
+          label: '10-12',
+          items: [
+            'Read and write Igbo, including tone marks',
+            'Build sentences in past and present tense',
+            'Use Igbo kinship terms correctly',
+            'Explain six proverbs and use them in conversation',
+            'Speak for three minutes about their family, unscripted',
+          ],
+        },
+        {
+          label: '13-16',
+          lead: OUTCOMES_LEAD_TEEN,
+          items: [
+            'Read unfamiliar Igbo aloud with correct tone',
+            'Hold a five-minute conversation without switching to English',
+            'Follow Igbo music and Nollywood dialogue',
+            'Write messages and short letters in Igbo',
+            'Deliver a five-minute talk in Igbo on a topic they choose',
+          ],
+          note: 'Learners completing two terms receive a Certificate of Achievement.',
+        },
+      ],
+    },
     icon: BookOpen,
     // Tints for the cream card ground. The dark build used amber/sky at low
     // alpha over charcoal; on cream the same idea needs the deeper pair, or the
@@ -175,12 +240,32 @@ export const programmes: Programme[] = [
     title: 'Early Years Maths & Number Confidence (ages 4-9)',
     description:
       'Build sharp, confident thinkers with a learning experience that makes complex ideas feel clear and rewarding.',
-    bullets: [
-      'Counting and early number sense',
-      'First addition and subtraction',
-      'Shape and pattern recognition',
-      'Confidence before formal schooling pressure',
-    ],
+    outcomes: {
+      intro: 'Aligned to the England EYFS framework and US Common Core.',
+      lead: OUTCOMES_LEAD,
+      bands: [
+        {
+          label: '4-6',
+          items: [
+            'Count and write numbers to 20',
+            'Number bonds within 10',
+            'Add and subtract within 10',
+            'Name 2D and 3D shapes, continue patterns',
+            'Compare length and weight',
+          ],
+        },
+        {
+          label: '7-9',
+          items: [
+            'Place value to 100',
+            'Add and subtract with regrouping',
+            'Times tables 2, 5 and 10',
+            'Halves, quarters and thirds',
+            'Money, time and word problems',
+          ],
+        },
+      ],
+    },
     icon: Ruler,
     accent: 'from-moss/15 via-transparent to-transparent',
   },
